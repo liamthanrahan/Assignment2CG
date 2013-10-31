@@ -1,0 +1,12 @@
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModel\bin\x86\Debug\SkinnedModel.dll
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModel\bin\x86\Debug\SkinnedModel.pdb
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModel\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModel\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModel\obj\x86\Debug\SkinnedModel.dll
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModel\obj\x86\Debug\SkinnedModel.pdb
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModel\bin\x86\Debug\SkinnedModel.dll
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModel\bin\x86\Debug\SkinnedModel.pdb
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModel\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModel\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModel\obj\x86\Debug\SkinnedModel.dll
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModel\obj\x86\Debug\SkinnedModel.pdb

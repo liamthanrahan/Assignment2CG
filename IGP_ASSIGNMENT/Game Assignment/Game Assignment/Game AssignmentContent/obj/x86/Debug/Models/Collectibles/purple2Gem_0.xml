@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics" xmlns:Framework="Microsoft.Xna.Framework">
+  <Asset Type="Graphics:MeshContent">
+    <Name>mesh02</Name>
+    <Identity>
+      <SourceFilename>H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT V1\Game Assignment\Game Assignment\Game AssignmentContent\Models\Collectibles\purple2Gem.fbx</SourceFilename>
+      <SourceTool>FbxImporter</SourceTool>
+    </Identity>
+    <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform>
+    <Positions>0.777493 -0.555841 19.81359 -2.581013 2.108301 14.9460011 -5.137475 4.066077 9.856756 -5.137474 4.066074 -10.0379457 -2.692657 2.219941 -14.8960533 0.766247 -0.5558 -19.7468338 -2.581003 -3.114269 14.9460011 -5.137465 -5.063621 9.954016 -5.137461 -5.063619 -9.940685 -2.692644 -3.225914 -14.8960533 3.85817 -3.11425 14.9460011 6.203707 -5.063588 9.954016 6.203707 -5.063585 -9.940684 3.969814 -3.225891 -14.8960524 3.858162 2.108321 14.9460011 6.203699 4.066112 9.856756 6.203695 4.066111 -10.0379438 3.969803 2.219966 -14.8960524 0.777493 -0.555841 19.81359 0.777493 -0.555841 19.81359 -2.581013 2.108301 14.9460011 0.777493 -0.555841 19.81359 -5.137475 4.066077 9.856756 -5.137474 4.066074 -10.0379457 -2.692657 2.219941 -14.8960533 0.766247 -0.5558 -19.7468338 0.766247 -0.5558 -19.7468338 0.766247 -0.5558 -19.7468338</Positions>
+    <Geometry>
+      <Batch>
+        <Material>#Resource1</Material>
+        <Indices>2 1 0 4 2 3 6 4 5 8 6 7 10 9 1 10 1 2 11 10 2 11 2 4 12 11 4 12 4 6 13 12 6 13 6 8 15 14 9 15 9 10 16 15 10 16 10 11 17 16 11 17 11 12 18 17 12 18 12 13 20 19 14 20 14 15 21 20 15 21 15 16 22 21 16 22 16 17 23 22 17 23 17 18 19 20 24 20 21 25 21 22 26 22 23 27</Indices>
+        <Vertices>
+          <PositionIndices>0 1 6 18 10 19 14 21 20 2 7 11 15 22 3 8 12 16 23 4 9 13 17 24 5 25 26 27</PositionIndices>
+          <Channels>
+            <VertexChannel Name="Normal0" ElementType="Framework:Vector3">-0.8230842 0 0.567888439 -0.8678243 0.0019226661 0.496810824 -0.5620289 -0.5896176 0.5800348 0 -0.885158837 0.465224147 0.5768303 -0.5926084 0.562150955 0.844966 0 0.534775853 0.57579273 0.5940428 0.5616932 0 0.8771935 0.480086684 0 0.91616565 0.400769055 -0.9792779 0.00213629566 0.20242928 -0.6913053 -0.6771447 0.251991332 0.6908475 -0.68062377 0.24378185 0.69054234 0.682393849 0.23963134 0 0.988219857 0.15289773 -0.9788812 -0.00109866634 -0.2042909 -0.6921903 -0.6794641 -0.243171483 0.6917325 -0.6829127 -0.234687343 0.691702 0.6812647 -0.2395703 0 0.9884945 -0.151097134 -0.866054237 0 -0.4999237 -0.562303543 -0.592791557 -0.576494634 0.577105 -0.595110953 -0.559221148 0.574022651 0.591814935 -0.5658437 0 0.9148228 -0.403820932 -0.8142033 0 -0.5805536 0 -0.876033843 -0.482192457 0.8344371 0 -0.5510727 0 0.867915869 -0.496658236</VertexChannel>
+            <VertexChannel Name="TextureCoordinate0" ElementType="Framework:Vector2">0.125 1 0.25 1 0.25 0.75 0.125 0.75 0.25 0.5 0.125 0.5 0.25 0.25 0.125 0.25 0.25 0 0.375 1 0.375 0.75 0.375 0.5 0.375 0.25 0.375 0 0.5 1 0.5 0.75 0.5 0.5 0.5 0.25 0.5 0 0.625 1 0.625 0.75 0.625 0.5 0.625 0.25 0.625 0 0.75 0.75 0.75 0.5 0.75 0.25 0.75 0</VertexChannel>
+          </Channels>
+        </Vertices>
+      </Batch>
+    </Geometry>
+  </Asset>
+  <Resources>
+    <Resource ID="#Resource1" Type="Graphics:BasicMaterialContent">
+      <Name>Purple_Gem</Name>
+      <Identity>
+        <SourceFilename>H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT V1\Game Assignment\Game Assignment\Game AssignmentContent\Models\Collectibles\purple2Gem.fbx</SourceFilename>
+        <SourceTool>FbxImporter</SourceTool>
+      </Identity>
+      <OpaqueData>
+        <Data Key="DiffuseColor" Type="Framework:Vector3">0.618 0.0408 0.702720046</Data>
+        <Data Key="EmissiveColor" Type="Framework:Vector3">0 0 0</Data>
+        <Data Key="Alpha" Type="float">0.6</Data>
+        <Data Key="SpecularColor" Type="Framework:Vector3">0 0 0</Data>
+      </OpaqueData>
+    </Resource>
+  </Resources>
+</XnaContent>

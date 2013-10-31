@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics" xmlns:Framework="Microsoft.Xna.Framework">
+  <Asset Type="Graphics:MeshContent">
+    <Name>mesh00</Name>
+    <Identity>
+      <SourceFilename>H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT V1\Game Assignment\Game Assignment\Game AssignmentContent\Models\Collectibles\goldGem.fbx</SourceFilename>
+      <SourceTool>FbxImporter</SourceTool>
+    </Identity>
+    <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform>
+    <Positions>0.835636 -0.840638 14.8928337 -3.144327 3.185112 14.89283 -6.649849 6.601779 9.998104 -6.649847 6.601776 -9.896597 -3.255972 3.296752 -14.9492245 0.835636 -0.840638 -14.9492207 -3.144316 -4.760736 14.89283 -6.649834 -8.266258 9.998104 -6.64983 -8.266256 -9.896597 -3.255957 -4.872381 -14.9492245 4.771181 -4.760727 14.89283 8.276701 -8.266244 9.998104 8.2767 -8.266241 -9.896597 4.882828 -4.872367 -14.9492226 4.771173 3.185123 14.89283 8.27669 6.601793 9.998104 8.276687 6.601792 -9.896597 4.882814 3.296768 -14.9492226 0.835636 -0.840638 14.8928337 0.835636 -0.840638 14.8928337 -3.144327 3.185112 14.89283 0.835636 -0.840638 14.8928337 -6.649849 6.601779 9.998104 -6.649847 6.601776 -9.896597 -3.255972 3.296752 -14.9492245 0.835636 -0.840638 -14.9492207 0.835636 -0.840638 -14.9492207 0.835636 -0.840638 -14.9492207</Positions>
+    <Geometry>
+      <Batch>
+        <Material>#Resource1</Material>
+        <Indices>2 1 0 4 2 3 6 4 5 8 6 7 10 9 1 10 1 2 11 10 2 11 2 4 12 11 4 12 4 6 13 12 6 13 6 8 15 14 9 15 9 10 16 15 10 16 10 11 17 16 11 17 11 12 18 17 12 18 12 13 20 19 14 20 14 15 21 20 15 21 15 16 22 21 16 22 16 17 23 22 17 23 17 18 19 20 24 20 21 25 21 22 26 22 23 27</Indices>
+        <Vertices>
+          <PositionIndices>0 1 6 18 10 19 14 21 20 2 7 11 15 22 3 8 12 16 23 4 9 13 17 24 5 25 26 27</PositionIndices>
+          <Channels>
+            <VertexChannel Name="Normal0" ElementType="Framework:Vector3">0 0 1 -0.647877455 0 0.7617115 -0.3642079 -0.3642079 0.857112348 0 0 0.9999695 0.3642079 -0.3642079 0.857112348 0 0 0.9999695 0.363719583 0.369426548 0.8550981 0 0 1 0 0.6538591 0.756584346 -0.969450951 0 0.245155185 -0.6663106 -0.6663106 0.3346965 0.6663106 -0.6663106 0.3346965 0.6675314 0.666219056 0.3324076 0 0.9711295 0.238471627 -0.9716788 0 -0.236213267 -0.669148862 -0.669148862 -0.3231605 0.669148862 -0.669148862 -0.3231605 0.6704001 0.6690268 -0.320780039 0 0.973265767 -0.229590744 -0.664052248 0 -0.747673 -0.375865966 -0.375865966 -0.8469802 0.375865966 -0.375865966 -0.8469802 0.375377655 0.381115139 -0.844874442 0 0.6700339 -0.7423017 0 0 -1 0 0 -1 0 0 -1 0 0 -1</VertexChannel>
+            <VertexChannel Name="TextureCoordinate0" ElementType="Framework:Vector2">0.125 1 0.25 1 0.25 0.75 0.125 0.75 0.25 0.5 0.125 0.5 0.25 0.25 0.125 0.25 0.25 0 0.375 1 0.375 0.75 0.375 0.5 0.375 0.25 0.375 0 0.5 1 0.5 0.75 0.5 0.5 0.5 0.25 0.5 0 0.625 1 0.625 0.75 0.625 0.5 0.625 0.25 0.625 0 0.75 0.75 0.75 0.5 0.75 0.25 0.75 0</VertexChannel>
+          </Channels>
+        </Vertices>
+      </Batch>
+    </Geometry>
+  </Asset>
+  <Resources>
+    <Resource ID="#Resource1" Type="Graphics:BasicMaterialContent">
+      <Name>Yellow_Gem</Name>
+      <Identity>
+        <SourceFilename>H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT V1\Game Assignment\Game Assignment\Game AssignmentContent\Models\Collectibles\goldGem.fbx</SourceFilename>
+        <SourceTool>FbxImporter</SourceTool>
+      </Identity>
+      <OpaqueData>
+        <Data Key="DiffuseColor" Type="Framework:Vector3">0.78744 0.78744 0.175680012</Data>
+        <Data Key="EmissiveColor" Type="Framework:Vector3">0 0 0</Data>
+        <Data Key="Alpha" Type="float">0.6</Data>
+        <Data Key="SpecularColor" Type="Framework:Vector3">0 0 0</Data>
+      </OpaqueData>
+    </Resource>
+  </Resources>
+</XnaContent>

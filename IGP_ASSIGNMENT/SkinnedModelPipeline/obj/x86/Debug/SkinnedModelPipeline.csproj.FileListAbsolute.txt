@@ -1,0 +1,14 @@
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModelPipeline\bin\x86\Debug\SkinnedModelPipeline.dll
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModelPipeline\bin\x86\Debug\SkinnedModelPipeline.pdb
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModelPipeline\bin\x86\Debug\SkinnedModel.dll
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModelPipeline\bin\x86\Debug\SkinnedModel.pdb
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModelPipeline\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.dll
+H:\Uni\2013\Semester 2\Game Programming\Animation\SkinningSample_4_0_WithCustomAnims\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.pdb
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModelPipeline\bin\x86\Debug\SkinnedModelPipeline.dll
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModelPipeline\bin\x86\Debug\SkinnedModelPipeline.pdb
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModelPipeline\bin\x86\Debug\SkinnedModel.dll
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModelPipeline\bin\x86\Debug\SkinnedModel.pdb
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModelPipeline\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.dll
+H:\Uni\2013\Semester 2\Game Programming\Assignments\Gold\IGP_ASSIGNMENT\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.pdb
