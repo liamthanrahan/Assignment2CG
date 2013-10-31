@@ -25,10 +25,12 @@ namespace Game_Assignment
         public float currentPitch = 0;
         public float currentYaw = 0;
         public bool orthoganal = false;
+        public bool updateFrustrum = true;
         public float width;
         public float height;
         public MouseState prevMouseState;
         public KeyboardState prevKeyboard;
+        public BoundingFrustum frustum;
 
         public Camera(Game game, Vector3 pos, Vector3 target, Vector3 up)
             : base(game)
@@ -41,6 +43,7 @@ namespace Game_Assignment
             width = (float)Game.Window.ClientBounds.Width;
             height = (float)Game.Window.ClientBounds.Height;
             projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Game.Window.ClientBounds.Width / (float)Game.Window.ClientBounds.Height, nearPlane, farPlane);
+            frustum = new BoundingFrustum(view * projection);
         }
         public override void Initialize()
         {
@@ -59,6 +62,10 @@ namespace Game_Assignment
             {
                 projection = Matrix.CreateOrthographic(width, height, nearPlane, farPlane);
             }
+            if (updateFrustrum)
+            {
+                frustum = new BoundingFrustum(view * projection);
+            }
             base.Update(gameTime);
         }
         private void CreateLookAt()
@@ -68,6 +75,13 @@ namespace Game_Assignment
         }
         private void checkKeyboardMouse()
         {
+            if (!prevKeyboard.IsKeyDown(Keys.G) && Keyboard.GetState().IsKeyDown(Keys.G))
+            {
+                if (updateFrustrum)
+                    updateFrustrum = false;
+                else
+                    updateFrustrum = true;
+            }
             //move forward and backward
             if (!orthoganal)
             {
@@ -103,7 +117,6 @@ namespace Game_Assignment
             {
                 position -= Vector3.Cross(up, direction) * speed;
             }
-
             //able to move camera freely if shift is held down
             if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
             {

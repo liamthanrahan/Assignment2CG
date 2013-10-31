@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -29,6 +30,7 @@ namespace Game_Assignment
         SpriteBatch spriteBatch;
         SpriteFont debugFont;
         public ModelManager modelManager;
+        public SoundManager soundManager;
         public Vector3 GRAVITY = Vector3.Down * 0.098f * 5f;
         public KeyboardState prevKeyboard;
         public KeyboardState keyboard;
@@ -39,7 +41,10 @@ namespace Game_Assignment
         public Character chosen;
         public Character follower;
         public List<BoundingBox> levelBoxes = new List<BoundingBox>();
+        public List<BasicModel> reloadModels = new List<BasicModel>();
         public AStar aStar;
+        public QuadTree quadTree;
+		public int score = 0;
         public float fpsTimer;
         public float FPS;
         public int frameCount;
@@ -61,11 +66,26 @@ namespace Game_Assignment
             device = graphics.GraphicsDevice;
             camera = new Camera(this, new Vector3(0, 0, 750), -Vector3.UnitZ, Vector3.Up);
             Components.Add(camera);
-
             modelManager = new ModelManager(this);
             Components.Add(modelManager);
-
+            soundManager = new SoundManager(this);
+            Components.Add(soundManager);
             base.Initialize();
+            reloadModels = modelManager.models;
+        }
+
+        protected void loadLevel()
+        {
+            device = graphics.GraphicsDevice;
+            Components.Clear();
+
+            camera = new Camera(this, new Vector3(0, 0, 750), -Vector3.UnitZ, Vector3.Up);
+            Components.Add(camera);
+
+            modelManager = new ModelManager(this);
+
+            modelManager.models = reloadModels;
+            Components.Add(modelManager);
         }
 
         /// <summary>
@@ -116,6 +136,23 @@ namespace Game_Assignment
 
         protected override void Update(GameTime gameTime)
         {
+            //killing and death
+            
+            BasicModel basic = enemyCollidingWith(chosen.box);
+            if(basic != null)
+            {
+                collisionType type = collisionBoxToBox(chosen.box, basic.box);
+                if ( type == collisionType.TOP)
+                {
+                    //remove enemy
+                    modelManager.models.Remove(basic);
+                    score += 200;
+                }
+                else if (type != collisionType.TOP && type != collisionType.NO_COLLISION)
+                {
+                    reloadWorld();
+                }
+            }
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -123,7 +160,13 @@ namespace Game_Assignment
             {
                 loadLevelBoxes();
                 aStar = new AStar(modelManager.widthOfMap, modelManager.heightOfMap, (int)modelManager.widthOfMap, (int)modelManager.heightOfMap, this);
-                Components.Add(aStar);
+                quadTree = new QuadTree(1, new BoundingBox(new Vector3(0, -modelManager.heightOfMap * 88.7f, 0), new Vector3(modelManager.widthOfMap * 117.3f, 0, 0)), this);
+
+                if (isLevelLoaded)
+                {
+                    Components.Add(quadTree);
+                    Components.Add(aStar);
+                }
             }
             else
             {
@@ -226,10 +269,14 @@ namespace Game_Assignment
                 //reset characters to original position
                 if (keyboard.IsKeyDown(Keys.R))
                 {
-                    chosen.position = chosen.resetPosition;
-                    chosen.velocity = Vector3.Zero;
-                    follower.position = follower.resetPosition;
-                    follower.velocity = Vector3.Zero;
+                    reloadWorld();
+                    SoundEffectInstance se = (SoundEffectInstance)soundManager.soundBank["dwarfStep"];
+                    se.Play();
+                }
+                if (keyboard.IsKeyDown(Keys.T))
+                {
+                    SoundEffectInstance se = (SoundEffectInstance)soundManager.soundBank["humanStep"];
+                    se.Play();
                 }
                 prevKeyboard = keyboard;
             }
@@ -237,6 +284,19 @@ namespace Game_Assignment
             base.Update(gameTime);
         }
 
+        private void reloadWorld()
+        {
+            modelManager.loadWorld();
+            foreach (Human ch in modelManager.models.OfType<Human>())
+            {
+                chosen = ch;
+                foreach (Dwarf df in modelManager.models.OfType<Dwarf>())
+                {
+                    follower = df;
+                    follower.position = chosen.position - Vector3.UnitX * 40;
+                }
+            }
+        }
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -287,6 +347,14 @@ namespace Game_Assignment
                     DebugShapeRenderer.AddLine((targetNode + new Vector3(-10, 0, 0)), (targetNode + new Vector3(10, 0, 0)), Color.CadetBlue);
                     DebugShapeRenderer.AddLine((targetNode + new Vector3(0, -10, 0)), (targetNode + new Vector3(0, 10, 0)), Color.CadetBlue);
                 }
+                DebugShapeRenderer.AddBoundingFrustum(camera.frustum, Color.Firebrick);
+                if (quadTree != null)
+                {
+                    foreach (QuadTree qt in QuadTree.leavesInsideBound)
+                    {
+                        DebugShapeRenderer.AddBoundingBox(qt.boundingBox, Color.Violet);
+                    }
+                }
                 //spriteBatch.Begin();
                 //foreach (AStar.Node node in aStar.gridBoxes)
                 //{
@@ -300,14 +368,14 @@ namespace Game_Assignment
                 //spriteBatch.End();
             }
 
-            showDebug();
-
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             DebugShapeRenderer.Draw(gameTime, camera.view, camera.projection);
 
             base.Draw(gameTime);
+            showDebug();
+			showScore();
         }
 
         #region Functions
@@ -345,6 +413,23 @@ namespace Game_Assignment
 
                 }
             }
+            return collisionType.NO_COLLISION;
+        }
+        //SAME AS ABOVE METHOD BUT WITH ONLY ONE BOX!
+        public collisionType collisionBoxToBox(BoundingBox box1, BoundingBox box2)
+        {
+                if (box1.Intersects(box2))
+                {
+                    if (box1.Max.X > box2.Min.X && box1.Min.X < box2.Max.X && (box1.Max.Y + box1.Min.Y) / 2 > box2.Max.Y)
+                        return collisionType.TOP;
+                    else if ((box1.Max.X + box1.Min.X) / 2 > box2.Min.X && (box1.Max.X + box1.Min.X) / 2 < box2.Max.X && (box1.Max.Y + box1.Min.Y) / 2 < box2.Max.Y)
+                        return collisionType.BOTTOM;
+                    else if ((box1.Max.X + box1.Min.X) / 2 > box2.Max.X)
+                        return collisionType.RIGHT;
+                    else if ((box1.Max.X + box1.Min.X) / 2 < box2.Min.X)
+                        return collisionType.LEFT;
+
+                }
             return collisionType.NO_COLLISION;
         }
 
@@ -389,7 +474,7 @@ namespace Game_Assignment
         {
             BasicModel tempModel = null;
             float smallestValue = float.MaxValue;
-            foreach(BasicModel bm in modelManager.models)
+            foreach (BasicModel bm in modelManager.models)
             {
                 float? intersects = r.Intersects(bm.box);
                 if (intersects.HasValue)
@@ -404,6 +489,25 @@ namespace Game_Assignment
             return tempModel;
         }
 
+        public BasicModel enemyCollidingWith(BoundingBox b)
+        {
+            foreach (BasicModel bm in modelManager.models)
+            {
+                if (b.Intersects(bm.box) && bm is Enemy)
+                {
+                    return bm;
+                }
+            }
+            return null;
+        }
+
+        private void showScore()
+        {
+            string scoreString = string.Copy("Score: " + score);
+            spriteBatch.Begin();
+            spriteBatch.DrawString(debugFont, scoreString, new Vector2(10, 20), Color.White);
+            spriteBatch.End();
+        }
         private void showDebug()
         {
             string test = string.Copy("follower: " + follower.GetType() + ", state: " + follower.npcState);
@@ -442,6 +546,16 @@ namespace Game_Assignment
             //spriteBatch.DrawString(debugFont, frameRateString, new Vector2(10, 180), Color.White);
             //spriteBatch.DrawString(debugFont, scoreInText, new Vector2(10, 200), Color.Red);
             spriteBatch.End();
+        }
+        public int numberOfCollisions(BoundingBox box, List<BoundingBox> boxes)
+        {
+            int count = 0;
+            for (int i = 0; i < boxes.Count; i++)
+            {
+                if (box.Intersects(boxes[i]))
+                    count++;
+            }
+            return count;
         }
         #endregion
     }

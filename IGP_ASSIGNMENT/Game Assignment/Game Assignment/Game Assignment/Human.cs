@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SkinnedModel;
 
 namespace Game_Assignment
 {
@@ -12,10 +13,13 @@ namespace Game_Assignment
         public Human(Model m, int xPos, int yPos, Game1 game)
             : base(m, xPos, yPos, game)
         {            
-            scaleValue = 30;
+            scaleValue = 20;
             maxSpeed = 5;
-            jumpForce = 14;
-            maxJumpHeight = -(jumpForce * jumpForce) / (2 * game.GRAVITY.Y);
+            jumpForce = 9;
+            rotationY = MathHelper.ToRadians(90);
+            rotationX = MathHelper.ToRadians(-90);
+            AnimationClip clip = skinningData.AnimationClips["Throw"];
+            animationPlayer.StartClip(clip);
         }
     }
 }

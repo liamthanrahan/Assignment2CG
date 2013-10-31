@@ -115,6 +115,9 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
+    <Reference Include="SkinnedModel">
+      <HintPath>..\..\..\SkinnedModel\bin\x86\Debug\SkinnedModel.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -135,9 +138,11 @@
     <Compile Include="BasicModel.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="CharacterStateMachine.cs" />
     <Compile Include="DebugClassRenderer.cs" />
     <Compile Include="Dwarf.cs" />
     <Compile Include="AStar.cs" />
+    <Compile Include="EnemyStateMachine.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="GroundModel.cs" />
@@ -145,6 +150,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="QuadTree.cs" />
+    <Compile Include="SoundManager.cs" />
     <Compile Include="StateMachine.cs" />
   </ItemGroup>
   <ItemGroup>

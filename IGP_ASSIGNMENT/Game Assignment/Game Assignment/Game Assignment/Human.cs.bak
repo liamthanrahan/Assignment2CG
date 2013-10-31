@@ -12,9 +12,9 @@ namespace Game_Assignment
         public Human(Model m, int xPos, int yPos, Game1 game)
             : base(m, xPos, yPos, game)
         {            
-            scaleValue = 20;
+            scaleValue = 30;
             maxSpeed = 5;
-            jumpForce = 16;
+            jumpForce = 14;
             maxJumpHeight = -(jumpForce * jumpForce) / (2 * game.GRAVITY.Y);
         }
     }

@@ -88,6 +88,20 @@ namespace Game_Assignment
                         break;
                 }
             }
+            foreach (QuadTree qt in QuadTree.leavesInsideBound)
+            {
+                if (qt.objects.Contains(this))
+                {
+                    //all characters behaviours           
+                    position += velocity;
+                    if (velocity.X > 0)
+                    {
+                        rotationY = MathHelper.Pi;
+                    }
+                    else if (velocity.X < 0)
+                    {
+                        rotationY = 0;
+                    }
 
             //all characters behaviours           
             position += velocity;
@@ -103,6 +117,30 @@ namespace Game_Assignment
             backFeet = new Vector3(box.Min.X + 2.5f, box.Min.Y - 5, 0);
             frontFeet = new Vector3(box.Max.X - 2.5f, box.Min.Y - 5, 0);
         }
+            }
+            }
+        // NEW!
+        //private bool jumpLedge()
+        //{
+        //    return (game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.LEFT 
+        //        || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.RIGHT)
+        //        && game.chosen.position.Y > position.Y 
+        //        && game.chosen.position.Y > game.boxCollidingWith(skyChecker, game.levelBoxes).Max.Y;
+        //}
+
+        //private bool jumpObstacle()
+        //{
+        //    return (game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.TOP
+        //        || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.LEFT
+        //        || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.RIGHT)
+        //        && Math.Abs(game.chosen.position.X - position.X) > 150; 
+        //}
+
+        //private bool jumpGap()
+        //{
+        //    return game.boxCollidingWith(skyChecker, game.levelBoxes) != null;
+        //}
+        //
   
         public void follow()
         {

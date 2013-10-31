@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SkinnedModel;
 
 namespace Game_Assignment
 {
@@ -22,8 +23,8 @@ namespace Game_Assignment
         public Vector3 spawnPosition;
         public bool rangedAttackEnabled = false;
         public bool chasingPlayer = false;
-        //NEW place holders. allows for easy editing
-        public Vector3 chaseThreshold;
+        //place holders. allows for easy editing
+        public float chaseThreshold;
         public float attackThreshold;
         //Left and Right wall for a patrol
         public BoundingBox leftWall;
@@ -32,38 +33,45 @@ namespace Game_Assignment
         public bool patrolByWalls;
         public bool patrolBySetWalls;
         public bool patrolBySetWallsWithThreshold;
+        public bool wallsNotSet;
         public float patrolThreshold;
+        //enemy point worth
+        public float points;
         
 
         public Enemy(Model m, int xPos, int yPos, Game1 game)
             : base(m, game)
         {
             position = new Vector3(xPos * 117.3f, yPos * 88.7f, 0);
-            scaleValue = 35;
-            rotationY = MathHelper.ToRadians(180);
+            scaleValue = 34;
+            rotationY = MathHelper.ToRadians(-90);
+            rotationX = MathHelper.ToRadians(-90);
+            AnimationClip clip = skinningData.AnimationClips["Attack"];
+            animationPlayer.StartClip(clip);
             vision = new Ray(position, Vector3.UnitX);
             
-            attackThreshold = 100;
-            patrolByWalls = false;
-            patrolBySetWalls = true;
-            patrolBySetWallsWithThreshold = true;
+            //attackThreshold = 100;
+            patrolByWalls = true;
+            patrolBySetWalls = false;
+            patrolBySetWallsWithThreshold = false;
             spawnPosition = position;
-            patrolThreshold = 500;
+            //patrolThreshold = 1000;
+            chaseThreshold = 500;
+            points = 200;
         }
         //NEW updated the structure for CHASE, still trying to figure out attack and throw.
         public override void Update(Camera camera)
         {
+            skinningData = model.Tag as SkinningData;
             float? rayLength = game.collisionRayToBox(vision, game.chosen.box);
-            chaseThreshold = game.chosen.position - position;
-
-            if ((game.modelCollidingWith(vision) is Character) && rayLength < attackThreshold)
-                state = enemyState.ATTACK;
-            else if (rayLength <= chaseThreshold.Length() && rayLength >= attackThreshold && game.modelCollidingWith(vision) is Character)
-            {
+            Console.WriteLine("RayLength = " + rayLength);
+            /*if ((game.modelCollidingWith(vision) is Character) && rayLength < attackThreshold)
+               state = enemyState.ATTACK;
+            else*/
+            //if (rayLength < chaseThreshold)  when rayLength is null, this is false.
+            if (rayLength < chaseThreshold)
                 chasingPlayer = true;
-                state = enemyState.CHASE;
-            }
-            else if (!(game.modelCollidingWith(vision) is Character) && (rayLength <= chaseThreshold.Length() || rayLength == null))
+            else if (!(game.modelCollidingWith(vision) is Character))
                 state = enemyState.PATROL;
             if (!chasingPlayer)
             {
@@ -72,17 +80,13 @@ namespace Game_Assignment
                     case enemyState.IDLE:
                         break;
                     case enemyState.ATTACK:
-                        if(game.chosen.position.X - position.X > 0)
+                        if (game.chosen.position.X - position.X > 0)
                             game.chosen.position += Vector3.Right * 3;
                         else
                             game.chosen.position += Vector3.Left * 3;
                         break;
                     case enemyState.CHASE:
-						Vector3 temp = Vector3.Normalize(chaseThreshold);
-	                    temp.Y = 0;
-	                    temp.Z = 0;
-	                    position += temp;
-	                    break;
+                        break;
                     case enemyState.THROW:
                         break;
                     case enemyState.PATROL:
@@ -105,19 +109,7 @@ namespace Game_Assignment
                         }
                         else if (patrolBySetWalls)
                         {
-                            if (patrolBySetWallsWithThreshold)
-                            {
-                                leftWall = new BoundingBox(new Vector3(position.X - patrolThreshold - 50, position.Y - 50, position.Z - 20), 
-                                    new Vector3(position.X - patrolThreshold, position.Y + 50, position.Z + 20));
-                                rightWall = new BoundingBox(new Vector3(position.X + patrolThreshold, position.Y - 50, position.Z - 20), 
-                                    new Vector3(position.X + patrolThreshold + 50, position.Y + 50, position.Z + 20));
-                            }
-                            else
-                            {
-                                leftWall = new BoundingBox();
-                                rightWall = new BoundingBox();
-                            }
-
+                            wallup();
                             if (box.Intersects(leftWall))
                                 rotationY = 0;
                             else if (box.Intersects(rightWall))
@@ -125,26 +117,45 @@ namespace Game_Assignment
                         }
                         break;
                 }
+                chasing();
+
+                if (rotationY == MathHelper.ToRadians(180))
+                {
+                    vision = new Ray(position, Vector3.Left);
+                }
+
+                foreach (QuadTree qt in QuadTree.leavesInsideBound)
+                {
+                    if (qt.objects.Contains(this))
+                    {
+                        chasing();//NEW
+                        if (rotationY == MathHelper.ToRadians(180))
+                        {
+                            vision = new Ray(position, Vector3.Left);
+                        }
+                        else if (rotationY == 0)
+                        {
+                            vision = new Ray(position, Vector3.Right);
+                        }
+                        DebugShapeRenderer.AddLine(position, position + vision.Direction * 200, Color.DarkBlue);
+                        position += velocity;
+                        backFeet = new Vector3(box.Min.X, box.Min.Y - 5, 0);
+                        frontFeet = new Vector3(box.Max.X, box.Min.Y - 5, 0);
+                    }
+                }
             }
-            chasing();//NEW
-            if (rotationY == MathHelper.ToRadians(180))
-            {
-                vision = new Ray(position, Vector3.Left);
-            }
-            else if (rotationY == 0)
-            {
-                vision = new Ray(position, Vector3.Right);
-            }
-            DebugShapeRenderer.AddLine(position, position + vision.Direction * 200, Color.DarkBlue);
-            position += velocity;
-            backFeet = new Vector3(box.Min.X, box.Min.Y - 5, 0);
-            frontFeet = new Vector3(box.Max.X, box.Min.Y - 5, 0);
         }
         //NEW
         public void chasing()
         {
+           
+            float distance = Vector3.Distance(game.chosen.position, position);
             if (chasingPlayer)
             {
+				if(animationPlayer.CurrentClip.Name != "Idle")
+                    animationPlayer.StartClip(skinningData.AnimationClips["Idle"]);
+                else if (animationPlayer.CurrentClip.Name != "Fire")
+                    animationPlayer.StartClip(skinningData.AnimationClips["Fire"]);
                 Vector3 temp = 2 * Vector3.Normalize(game.chosen.position - position);
                 temp.Y = 0;
                 temp.Z = 0;
@@ -154,8 +165,53 @@ namespace Game_Assignment
                     rotationY = MathHelper.ToRadians(180);
                 position += temp;
             }
-            if (Math.Abs(game.chosen.position.X - position.X) > chaseThreshold.Length() || (!(game.modelCollidingWith(vision) is Character) && game.collisionRayToBox(vision, game.chosen.box) <=100))
+            if (distance > chaseThreshold)
+            {
                 chasingPlayer = false;
+                state = enemyState.PATROL;
+            }
+        }
+
+        public void wallup()
+        {
+                if (patrolBySetWalls)
+                {
+                    leftWall = new BoundingBox(
+                        new Vector3(position.X - 25, position.Y - 100, position.Z - 20),
+                        new Vector3(position.X + 25, position.Y, position.Z + 100));
+                    rightWall = new BoundingBox(
+                        new Vector3(position.X - 25, position.Y - 100, position.Z - 20),
+                        new Vector3(position.X + 25, position.Y, position.Z + 100));
+                    placeWalls();
+                }
+                else if (patrolBySetWallsWithThreshold)
+                {
+                    leftWall = new BoundingBox(
+                        new Vector3(position.X - patrolThreshold - 50, position.Y - 50, position.Z - 20),
+                        new Vector3(position.X - patrolThreshold, position.Y + 50, position.Z + 20));
+                    rightWall = new BoundingBox(
+                        new Vector3(position.X + patrolThreshold, position.Y - 50, position.Z - 20),
+                        new Vector3(position.X + patrolThreshold + 50, position.Y + 50, position.Z + 20));
+                }
+                wallsNotSet = false;
+        }
+
+        private void placeWalls()
+        {
+            int test = game.numberOfCollisions(leftWall, game.levelBoxes);
+            while (game.numberOfCollisions(leftWall, game.levelBoxes) == 2 
+                || (game.numberOfCollisions(leftWall, game.levelBoxes) == 1 
+                && game.collisionBoxToBoxes(leftWall, game.levelBoxes) == Game1.collisionType.TOP))
+            {
+                leftWall.Min += Vector3.Left;
+                leftWall.Max += Vector3.Left;
+            }
+            while (game.numberOfCollisions(rightWall, game.levelBoxes) == 2 
+                || (game.numberOfCollisions(rightWall, game.levelBoxes) == 1 && game.collisionBoxToBoxes(rightWall, game.levelBoxes) == Game1.collisionType.TOP))
+            {
+                rightWall.Min += Vector3.Right;
+                rightWall.Max += Vector3.Right;
+            }
         }
     }
 }

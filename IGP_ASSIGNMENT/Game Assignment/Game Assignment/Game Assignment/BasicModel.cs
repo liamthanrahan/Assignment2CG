@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SkinnedModel;
 
 namespace Game_Assignment
 {
@@ -22,13 +23,19 @@ namespace Game_Assignment
         public bool canJump = true;
         public BoundingBox box;
         public Game1 game;
-
+        public AnimationPlayer animationPlayer;
+        public SkinningData skinningData;
 
         public BasicModel(Model m, Game1 game)
         {
             model = m;
             this.game = game;
             transforms = new Matrix[model.Bones.Count];
+            skinningData = model.Tag as SkinningData;
+            if (skinningData != null)
+            {
+                animationPlayer = new AnimationPlayer(skinningData);
+            }
         }
 
         public virtual void Update(Camera camera)
@@ -36,26 +43,39 @@ namespace Game_Assignment
         }
 
         public virtual void Draw(Camera camera, GraphicsDevice device)
-        {            
+        {
             model.Root.Transform = Matrix.Identity *
                 Matrix.CreateScale(scaleValue) *
                 Matrix.CreateRotationX(rotationX) *
                 Matrix.CreateRotationY(rotationY) *
                 Matrix.CreateRotationZ(rotationZ) *
                 Matrix.CreateTranslation(position);
-
-            model.CopyAbsoluteBoneTransformsTo(transforms);
-            foreach (ModelMesh mesh in model.Meshes)
+            if (skinningData != null)
             {
-                foreach (BasicEffect be in mesh.Effects)
+                Matrix[] bones = animationPlayer.GetSkinTransforms();
+
+                model.CopyAbsoluteBoneTransformsTo(transforms);
+                foreach (ModelMesh mesh in model.Meshes)
                 {
-                    be.World = transforms[mesh.ParentBone.Index];
-                    be.Projection = camera.projection;
-                    be.View = camera.view;                   
-                    //be.EnableDefaultLighting();
-                    box = UpdateBoundingBox(model, be.World);
+                    foreach (SkinnedEffect se in mesh.Effects)
+                    {
+                        se.SetBoneTransforms(bones);
+                        se.World = transforms[mesh.ParentBone.Index];
+                        se.Projection = camera.projection;
+                        se.View = camera.view;
+                        se.AmbientLightColor = Vector3.One;
+                        se.DiffuseColor = Vector3.One;
+                        se.EnableDefaultLighting();
+                        box = UpdateBoundingBox(model, se.World);
+                    }
+                    foreach (QuadTree qt in QuadTree.leavesInsideBound)
+                    {
+                        if (qt.objects.Contains(this))
+                        {
+                            mesh.Draw();
+                        }
+                    }
                 }
-                mesh.Draw();
             }
         }
 
@@ -109,8 +129,8 @@ namespace Game_Assignment
                 tempVelocity.Y = 0;
                 velocity = tempVelocity;
                 canJump = true;
-                if(this == game.follower)
-                Console.WriteLine("TOP");
+                if (this == game.follower)
+                    Console.WriteLine("TOP");
             }
             //resolves collisions when under level
             else if (game.collisionBoxToBoxes(box, game.levelBoxes) == Game1.collisionType.BOTTOM)
@@ -124,7 +144,7 @@ namespace Game_Assignment
                 tempVel.Y = 0;
                 velocity = tempVel;
                 if (this == game.follower)
-                Console.WriteLine("BOTTOM");
+                    Console.WriteLine("BOTTOM");
             }
             //resolves collisions when left of level
             else if (game.collisionBoxToBoxes(box, game.levelBoxes) == Game1.collisionType.LEFT)
@@ -137,7 +157,7 @@ namespace Game_Assignment
                 tempVel.X = 0;
                 velocity = tempVel;
                 if (this == game.follower)
-                Console.WriteLine("LEFT");
+                    Console.WriteLine("LEFT");
             }
             //resolves collisions when right of level
             else if (game.collisionBoxToBoxes(box, game.levelBoxes) == Game1.collisionType.RIGHT)
@@ -150,7 +170,7 @@ namespace Game_Assignment
                 tempVel.X = 0;
                 velocity = tempVel;
                 if (this == game.follower)
-                Console.WriteLine("RIGHT");
+                    Console.WriteLine("RIGHT");
             }
 
             //apply gravity when jumping or not colliding with the floor

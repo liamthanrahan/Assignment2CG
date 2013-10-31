@@ -9,7 +9,8 @@ namespace Game_Assignment
     {
         public enum States { IDLE, FOLLOW, JUMP }
 
-        public CharacterStateMachine(BasicModel owner, CharacterStateMachine.States initialState)
+        public CharacterStateMachine(BasicModel owner, States initialState) 
+            : base(owner)
         {           
         }
 

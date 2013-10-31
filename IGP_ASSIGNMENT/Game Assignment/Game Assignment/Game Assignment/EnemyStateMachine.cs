@@ -10,6 +10,7 @@ namespace Game_Assignment
         public enum States { IDLE, ATTACK, CHASE, THROW, PATROL }
 
         public EnemyStateMachine(BasicModel owner, EnemyStateMachine.States initialState)
+            : base(owner)
         {           
         }
 

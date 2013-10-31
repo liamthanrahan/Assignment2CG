@@ -5,16 +5,16 @@ using System.Text;
 
 namespace Game_Assignment
 {
-    public interface StateMachine
+    public class StateMachine
     {
         public enum States { IDLE, ATTACK, FOLLOW, JUMP, CHASE, THROW, PATROL }
         private States currentState;
         BasicModel owner;
 
-        public StateMachine(BasicModel owner, States initialState)
+        public StateMachine(BasicModel owner)
         {
             this.owner = owner;
-            currentState = initialState;
+            currentState = States.IDLE;
         }
 
 

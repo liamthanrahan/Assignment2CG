@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SkinnedModel;
 
 namespace Game_Assignment
 {
@@ -22,7 +23,7 @@ namespace Game_Assignment
         public Vector3 spawnPosition;
         public bool rangedAttackEnabled = false;
         public bool chasingPlayer = false;
-        //NEW place holders. allows for easy editing
+        //place holders. allows for easy editing
         public float chaseThreshold;
         public float attackThreshold;
         //Left and Right wall for a patrol
@@ -32,37 +33,45 @@ namespace Game_Assignment
         public bool patrolByWalls;
         public bool patrolBySetWalls;
         public bool patrolBySetWallsWithThreshold;
+        public bool wallsNotSet;
         public float patrolThreshold;
+        //enemy point worth
+        public float points;
         
 
         public Enemy(Model m, int xPos, int yPos, Game1 game)
             : base(m, game)
         {
             position = new Vector3(xPos * 117.3f, yPos * 88.7f, 0);
-            scaleValue = 35;
-            rotationY = MathHelper.ToRadians(180);
+            scaleValue = 34;
+            rotationY = MathHelper.ToRadians(-90);
+            rotationX = MathHelper.ToRadians(-90);
+            AnimationClip clip = skinningData.AnimationClips["Attack"];
+            animationPlayer.StartClip(clip);
             vision = new Ray(position, Vector3.UnitX);
-            chaseThreshold = 1000;
-            attackThreshold = 100;
-            patrolByWalls = false;
-            patrolBySetWalls = true;
-            patrolBySetWallsWithThreshold = true;
+            
+            //attackThreshold = 100;
+            patrolByWalls = true;
+            patrolBySetWalls = false;
+            patrolBySetWallsWithThreshold = false;
             spawnPosition = position;
-            patrolThreshold = 500;
+            //patrolThreshold = 1000;
+            chaseThreshold = 500;
+            points = 200;
         }
         //NEW updated the structure for CHASE, still trying to figure out attack and throw.
         public override void Update(Camera camera)
         {
+			skinningData = model.Tag as SkinningData;
             float? rayLength = game.collisionRayToBox(vision, game.chosen.box);
-            
-            if ((game.modelCollidingWith(vision) is Character) && rayLength < attackThreshold)
-                state = enemyState.ATTACK;
-            else if (rayLength <= chaseThreshold && rayLength >= attackThreshold && game.modelCollidingWith(vision) is Character)
-            {
+            Console.WriteLine("RayLength = "+ rayLength);
+            /*if ((game.modelCollidingWith(vision) is Character) && rayLength < attackThreshold)
+               state = enemyState.ATTACK;
+            else*/
+            //if (rayLength < chaseThreshold)  when rayLength is null, this is false.
+            if (rayLength < chaseThreshold)
                 chasingPlayer = true;
-                state = enemyState.CHASE;
-            }
-            else if (!(game.modelCollidingWith(vision) is Character) && (rayLength <= chaseThreshold || rayLength == null))
+            else if (!(game.modelCollidingWith(vision) is Character))
                 state = enemyState.PATROL;
             if (!chasingPlayer)
             {
@@ -100,19 +109,7 @@ namespace Game_Assignment
                         }
                         else if (patrolBySetWalls)
                         {
-                            if (patrolBySetWallsWithThreshold)
-                            {
-                                leftWall = new BoundingBox(new Vector3(position.X - patrolThreshold - 50, position.Y - 50, position.Z - 20), 
-                                    new Vector3(position.X - patrolThreshold, position.Y + 50, position.Z + 20));
-                                rightWall = new BoundingBox(new Vector3(position.X + patrolThreshold, position.Y - 50, position.Z - 20), 
-                                    new Vector3(position.X + patrolThreshold + 50, position.Y + 50, position.Z + 20));
-                            }
-                            else
-                            {
-                                leftWall = new BoundingBox();
-                                rightWall = new BoundingBox();
-                            }
-
+                            wallup();
                             if (box.Intersects(leftWall))
                                 rotationY = 0;
                             else if (box.Intersects(rightWall))
@@ -120,26 +117,42 @@ namespace Game_Assignment
                         }
                         break;
                 }
-            }
-            chasing();//NEW
+             chasing();
+            
             if (rotationY == MathHelper.ToRadians(180))
             {
                 vision = new Ray(position, Vector3.Left);
             }
-            else if (rotationY == 0)
+
+            foreach (QuadTree qt in QuadTree.leavesInsideBound)
             {
-                vision = new Ray(position, Vector3.Right);
+                if (qt.objects.Contains(this))
+                {
+                    chasing();//NEW
+                    if (rotationY == MathHelper.ToRadians(180))
+                    {
+                        vision = new Ray(position, Vector3.Left);
+                    }
+                    else if (rotationY == 0)
+                    {
+                        vision = new Ray(position, Vector3.Right);
+                    }
+                    DebugShapeRenderer.AddLine(position, position + vision.Direction * 200, Color.DarkBlue);
+                    position += velocity;
+                    backFeet = new Vector3(box.Min.X, box.Min.Y - 5, 0);
+                    frontFeet = new Vector3(box.Max.X, box.Min.Y - 5, 0);
+                }
             }
-            DebugShapeRenderer.AddLine(position, position + vision.Direction * 200, Color.DarkBlue);
-            position += velocity;
-            backFeet = new Vector3(box.Min.X, box.Min.Y - 5, 0);
-            frontFeet = new Vector3(box.Max.X, box.Min.Y - 5, 0);
         }
         //NEW
         public void chasing()
         {
             if (chasingPlayer)
             {
+				if(animationPlayer.CurrentClip.Name != "Idle")
+                    animationPlayer.StartClip(skinningData.AnimationClips["Idle"]);
+                else if (animationPlayer.CurrentClip.Name != "Fire")
+                    animationPlayer.StartClip(skinningData.AnimationClips["Fire"]);
                 Vector3 temp = 2 * Vector3.Normalize(game.chosen.position - position);
                 temp.Y = 0;
                 temp.Z = 0;
@@ -149,7 +162,7 @@ namespace Game_Assignment
                     rotationY = MathHelper.ToRadians(180);
                 position += temp;
             }
-            if (Math.Abs(game.chosen.position.X - position.X) > chaseThreshold || (!(game.modelCollidingWith(vision) is Character) && game.collisionRayToBox(vision, game.chosen.box) <=100))
+            if (Math.Abs(game.chosen.position.X - position.X) > chaseThreshold.Length() || (!(game.modelCollidingWith(vision) is Character) && game.collisionRayToBox(vision, game.chosen.box) <=100))
                 chasingPlayer = false;
         }
     }

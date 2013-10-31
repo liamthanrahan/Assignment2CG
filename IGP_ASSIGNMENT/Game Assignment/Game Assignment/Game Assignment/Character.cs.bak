@@ -7,12 +7,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Game_Assignment
 {
-    public enum characterState
+    /*public enum characterState
     {
         IDLE,
         FOLLOW,
         JUMP
-    }
+    }*/
 
     public class Character : BasicModel
     {
@@ -22,9 +22,12 @@ namespace Game_Assignment
         public float mass;
         public float maxSpeed;
         public float jumpForce;
-        public characterState npcState = characterState.FOLLOW;
-        public BoundingBox skyChecker;
+        //public characterState npcState = characterState.FOLLOW;
+        public StateMachine npcState;
+        //public BoundingBox skyChecker;
         public float maxJumpHeight;
+        public Vector3 target;
+        public int pathIndex = 1;
 
         public Character(Model m, int xPos, int yPos, Game1 game)
             : base(m, game)
@@ -32,103 +35,108 @@ namespace Game_Assignment
 
             position = new Vector3(xPos * 117.3f, yPos * 88.7f, 0);
             rotationY = MathHelper.ToRadians(180);
+            npcState = new CharacterStateMachine(this, CharacterStateMachine.States.FOLLOW);
         }
         //Changed to allow for changing rotation, skychecker, and chase to be more effective...
         public override void Update(Camera camera)
         {
-            if (rotationY == 0) //right
-            {
-                skyChecker = new BoundingBox(new Vector3(box.Max.X, box.Min.Y, box.Min.Z),
-                new Vector3(box.Max.X + (distanceThreshold(this)), (box.Min.Y + maxJumpHeight), box.Max.Z));
-            }
-            else //left
-            {
-                skyChecker = new BoundingBox(new Vector3(box.Min.X - (distanceThreshold(this)), box.Min.Y, box.Min.Z),
-                   new Vector3(box.Min.X, (box.Min.Y + maxJumpHeight), box.Max.Z));
-            }
+            //if (rotationY == 0) //right
+            //{
+            //    skyChecker = new BoundingBox(new Vector3(box.Max.X, box.Min.Y, box.Min.Z),
+            //    new Vector3(box.Max.X + (distanceThreshold(this)), (box.Min.Y + maxJumpHeight), box.Max.Z));
+            //}
+            //else //left
+            //{
+            //    skyChecker = new BoundingBox(new Vector3(box.Min.X - (distanceThreshold(this)), box.Min.Y, box.Min.Z),
+            //       new Vector3(box.Min.X, (box.Min.Y + maxJumpHeight), box.Max.Z));
+            //}
+
             if (this == game.follower)
             {
+
                 //AI Behaviour
-                switch (npcState)
+                switch (npcState.getCurrentState())
                 {
-                    case characterState.FOLLOW:
-                        follow(game.chosen);
-                       
-                        //boxCollidingWith returns the box your colliding with
-                        if (jumpLedge() || jumpObstacle())
-                            npcState = characterState.JUMP;
+                    case StateMachine.States.FOLLOW:
+                        if (game.aStar.paths.Count > 1)
+                        {
+                            target = game.aStar.paths[1];
+                            game.aStar.state = AStar.SearchState.IDLE;
+                        }
+
+                        if (calculateDistance(game.chosen) > width(game.chosen))
+                        {
+                            follow();
+                        }
+                        else if (calculateDistance(game.chosen) < width(game.chosen))
+                        {
+                            velocity.X -= (velocity.X * 0.1f);
+                        }
+
+                        if (target.Y > position.Y && target.Y < (position.Y + maxJumpHeight))
+                        {
+                            npcState.changeState(StateMachine.States.JUMP);
+                        }
                         break;
-                    case characterState.IDLE:
+                    case StateMachine.States.IDLE:
                         velocity.X = 0;
                         break;
-                    case characterState.JUMP:
+                    case StateMachine.States.JUMP:
                         if (canJump)
                             jump();
-                        game.tempBoxes.Clear();
-                        npcState = characterState.FOLLOW;
+                        npcState.changeState(StateMachine.States.FOLLOW);
                         break;
                 }
-                
             }
-            //all characters behaviours           
-            position += velocity;
+            foreach (QuadTree qt in QuadTree.leavesInsideBound)
+            {
+                if (qt.objects.Contains(this))
+                {
+                    //all characters behaviours           
+                    position += velocity;
+                    if (velocity.X > 0)
+                    {
+                        rotationY = MathHelper.Pi;
+                    }
+                    else if (velocity.X < 0)
+                    {
+                        rotationY = 0;
+                    }
 
-            backFeet = new Vector3(box.Min.X + 2.5f, box.Min.Y - 5, 0);
-            frontFeet = new Vector3(box.Max.X - 2.5f, box.Min.Y - 5, 0);
+                    backFeet = new Vector3(box.Min.X + 2.5f, box.Min.Y - 5, 0);
+                    frontFeet = new Vector3(box.Max.X - 2.5f, box.Min.Y - 5, 0);
+                }
+            }
         }
         // NEW!
-        private bool jumpLedge()
-        {
-            return (game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.LEFT 
-                || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.RIGHT)
-                && game.chosen.position.Y > position.Y 
-                && game.chosen.position.Y > game.boxCollidingWith(skyChecker, game.levelBoxes).Max.Y;
-        }
+        //private bool jumpLedge()
+        //{
+        //    return (game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.LEFT 
+        //        || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.RIGHT)
+        //        && game.chosen.position.Y > position.Y 
+        //        && game.chosen.position.Y > game.boxCollidingWith(skyChecker, game.levelBoxes).Max.Y;
+        //}
 
-        private bool jumpObstacle()
-        {
-            return (game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.TOP
-                || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.LEFT
-                || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.RIGHT)
-                && Math.Abs(game.chosen.position.X - position.X) > 150; 
-        }
+        //private bool jumpObstacle()
+        //{
+        //    return (game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.TOP
+        //        || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.LEFT
+        //        || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.RIGHT)
+        //        && Math.Abs(game.chosen.position.X - position.X) > 150; 
+        //}
 
-        private bool jumpGap()
-        {
-            return game.boxCollidingWith(skyChecker, game.levelBoxes) != null;
-        }
+        //private bool jumpGap()
+        //{
+        //    return game.boxCollidingWith(skyChecker, game.levelBoxes) != null;
+        //}
         //
-        //NEW altered to change rotation while moving in a direction
-        public void follow(Character character)
+  
+        public void follow()
         {
-            float tempThreshold = distanceThreshold(character);
-            float tempDistance = calculateDistance(character);
-
-            //seek and arrive at PC
-            if (tempDistance >= tempThreshold)
+            if (game.collisionBoxToBoxes(box, game.levelBoxes) == Game1.collisionType.NO_COLLISION)
             {
-                //npcState = characterState.FOLLOW;
-                Vector3 target = character.position;
-                if (character.position.X > position.X)
-                {
-                    target -= Vector3.UnitX * tempThreshold * 2;
-                    rotationY = 0;
-                }
-                else
-                {
-                    target += Vector3.UnitX * tempThreshold * 2;
-                    rotationY = MathHelper.ToRadians(180);
-                }
-                if (game.collisionBoxToBoxes(box, game.levelBoxes) == Game1.collisionType.NO_COLLISION)
-                {
-                    steering = seek(target, tempThreshold);
-                    velocity.X += steering.X / 5.5f;
-                }
-
-            }
-            else
-            {
-                velocity.X = 0;
+                steering = seek(target, 0);
+                velocity.X += steering.X / 5.5f;
             }
         }
 
@@ -144,10 +152,16 @@ namespace Game_Assignment
             return distance;
         }
 
-        public float distanceThreshold(Character character)
+		public float width(Character character)
         {
-            float distanceThreshold = (character.box.Max.X - character.box.Min.X);
-            return distanceThreshold;
+            float width = (character.box.Max.X - character.box.Min.X);
+            return width;
+        }
+
+        public float height(Character character)
+        {
+            float height = (character.box.Max.X - character.box.Min.X);
+            return height;
         }
 
         public void keyCheck()
@@ -187,26 +201,20 @@ namespace Game_Assignment
             {
                 if (canJump || game.collisionBoxToBoxes(box,game.levelBoxes) == Game1.collisionType.BOTTOM)
                     jump();
-                if (this == game.chosen)
-                {
-                    if (game.tempBoxes.Count > 0)
-                        game.tempBoxes.Clear();
-                    BoundingBox tempBox = box;
-                    tempBox.Max.Z += 10;
-                    game.tempBoxes.Add(tempBox);
-                }
             }
 
             //stay command toggle
             if (game.keyboard.IsKeyDown(Keys.Q) && !game.prevKeyboard.IsKeyDown(Keys.Q))
             {
-                if (game.follower.npcState == characterState.FOLLOW)
+                if (game.follower.npcState.getCurrentState() == StateMachine.States.FOLLOW)
                 {
-                    game.follower.npcState = characterState.IDLE;
+                    game.follower.npcState.changeState(StateMachine.States.IDLE);
+                    game.chosen.npcState.changeState(StateMachine.States.IDLE);
                 }
-                else if (game.follower.npcState == characterState.IDLE)
+                else if (game.follower.npcState.getCurrentState() == StateMachine.States.IDLE)
                 {
-                    game.follower.npcState = characterState.FOLLOW;
+                    game.follower.npcState.changeState(StateMachine.States.FOLLOW);
+                    game.chosen.npcState.changeState(StateMachine.States.FOLLOW);
                 }
             }
 
@@ -217,18 +225,18 @@ namespace Game_Assignment
                 if (rotationY == 0)
                 {
                     grabBox = new BoundingBox(new Vector3(box.Max.X, box.Min.Y, box.Min.Z),
-                       new Vector3((box.Max.X + distanceThreshold(this)), box.Max.Y, box.Max.Z));
+                       new Vector3((box.Max.X + width(this)), box.Max.Y, box.Max.Z));
                 }
                 else if (rotationY == MathHelper.Pi)
                 {
-                    grabBox = new BoundingBox(new Vector3((box.Min.X - distanceThreshold(this)), box.Min.Y, box.Min.Z),
+                    grabBox = new BoundingBox(new Vector3((box.Min.X - width(this)), box.Min.Y, box.Min.Z),
                        new Vector3(box.Min.X, box.Max.Y, box.Max.Z));
                 }
 
                 if (grabBox.Intersects(game.follower.box) || this.box.Intersects(game.follower.box))
                 {
                     Console.WriteLine("im grabbing your ass");
-                    game.follower.npcState = characterState.IDLE;
+                    game.follower.npcState.changeState(StateMachine.States.IDLE);
                 }
             }
 

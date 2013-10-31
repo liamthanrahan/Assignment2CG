@@ -38,6 +38,13 @@ namespace Game_Assignment
         protected override void LoadContent()
         {
             // Use configuration file to assemble world
+            loadWorld();
+            base.LoadContent();
+        }
+
+        public void loadWorld()
+        {
+            models.Clear();
             ConfigSettings config = Game.Content.Load<ConfigSettings>(@"Config\levelconfig");
             BehaviourConfig behaviourConfig = Game.Content.Load<BehaviourConfig>(@"Config\behaviourconfig");
 
@@ -51,7 +58,7 @@ namespace Game_Assignment
                 {
                     addModel(config.modelmap[counterY][counterX], counterX, counterY);
                     counterX++;
-                    if(counterX > counterXMax)
+                    if (counterX > counterXMax)
                     {
                         counterXMax = counterX;
                     }
@@ -59,10 +66,8 @@ namespace Game_Assignment
                 counterX = 0;
                 counterY++;
             }
-            widthOfMap = counterXMax ;
+            widthOfMap = counterXMax;
             heightOfMap = counterY;
-
-            base.LoadContent();
         }
 
         private void addModel(char modelSymbol, int xPos, int yPos)
@@ -95,7 +100,7 @@ namespace Game_Assignment
 
                 default: break;
             }
-
+            
         }
 
         public override void Update(GameTime gameTime)

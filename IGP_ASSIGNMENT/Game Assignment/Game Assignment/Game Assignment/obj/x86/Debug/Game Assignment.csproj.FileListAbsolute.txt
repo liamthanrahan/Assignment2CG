@@ -332,3 +332,5 @@ C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assign
 C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\obj\x86\Debug\Game Assignment.application
 C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\obj\x86\Debug\Game Assignment.exe
 C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\obj\x86\Debug\Game Assignment.pdb
+C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\SkinnedModel.dll
+C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\SkinnedModel.pdb

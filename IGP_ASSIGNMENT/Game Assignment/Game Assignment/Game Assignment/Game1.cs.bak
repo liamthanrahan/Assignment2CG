@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -28,7 +29,8 @@ namespace Game_Assignment
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont debugFont;
-        ModelManager modelManager;
+        public ModelManager modelManager;
+        public SoundManager soundManager;
         public Vector3 GRAVITY = Vector3.Down * 0.098f * 5f;
         public KeyboardState prevKeyboard;
         public KeyboardState keyboard;
@@ -39,8 +41,13 @@ namespace Game_Assignment
         public Character chosen;
         public Character follower;
         public List<BoundingBox> levelBoxes = new List<BoundingBox>();
-        public List<BoundingBox> tempBoxes = new List<BoundingBox>();
+        public List<BasicModel> reloadModels = new List<BasicModel>();
         public AStar aStar;
+        public QuadTree quadTree;
+		public int score = 0;
+        public float fpsTimer;
+        public float FPS;
+        public int frameCount;
 
         public Game1()
         {
@@ -59,11 +66,26 @@ namespace Game_Assignment
             device = graphics.GraphicsDevice;
             camera = new Camera(this, new Vector3(0, 0, 750), -Vector3.UnitZ, Vector3.Up);
             Components.Add(camera);
-
             modelManager = new ModelManager(this);
             Components.Add(modelManager);
-
+            soundManager = new SoundManager(this);
+            Components.Add(soundManager);
             base.Initialize();
+            reloadModels = modelManager.models;
+        }
+
+        protected void loadLevel()
+        {
+            device = graphics.GraphicsDevice;
+            Components.Clear();
+
+            camera = new Camera(this, new Vector3(0, 0, 750), -Vector3.UnitZ, Vector3.Up);
+            Components.Add(camera);
+
+            modelManager = new ModelManager(this);
+
+            modelManager.models = reloadModels;
+            Components.Add(modelManager);
         }
 
         /// <summary>
@@ -90,7 +112,7 @@ namespace Game_Assignment
                 foreach (Dwarf df in modelManager.models.OfType<Dwarf>())
                 {
                     follower = df;
-                    follower.position = chosen.position - Vector3.UnitX * 100;
+                    follower.position = chosen.position - Vector3.UnitX * 40;
                     follower.resetPosition = follower.position;
                 }
             }
@@ -114,6 +136,23 @@ namespace Game_Assignment
 
         protected override void Update(GameTime gameTime)
         {
+            //killing and death
+            
+            BasicModel basic = enemyCollidingWith(chosen.box);
+            if(basic != null)
+            {
+                collisionType type = collisionBoxToBox(chosen.box, basic.box);
+                if ( type == collisionType.TOP)
+                {
+                    //remove enemy
+                    modelManager.models.Remove(basic);
+                    score += 200;
+                }
+                else if (type != collisionType.TOP && type != collisionType.NO_COLLISION)
+                {
+                    reloadWorld();
+                }
+            }
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -121,26 +160,58 @@ namespace Game_Assignment
             {
                 loadLevelBoxes();
                 aStar = new AStar(modelManager.widthOfMap, modelManager.heightOfMap, (int)modelManager.widthOfMap, (int)modelManager.heightOfMap, this);
+                quadTree = new QuadTree(1, new BoundingBox(new Vector3(0, -modelManager.heightOfMap * 88.7f, 0), new Vector3(modelManager.widthOfMap * 117.3f, 0, 0)), this);
+
+                if (isLevelLoaded)
+                {
+                    Components.Add(quadTree);
+                    Components.Add(aStar);
+                }
             }
             else
             {
-
+                fpsTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 keyboard = Keyboard.GetState();
 
+                if (!prevKeyboard.IsKeyDown(Keys.Enter) && keyboard.IsKeyDown(Keys.Enter))
+                {
+                    if (aStar.state == AStar.SearchState.SEARCHING)
+                    {
+                        aStar.searchStep();
+                    }
+                }
+
+                if (frameCount % 20 == 0 &&
+                     aStar.state != AStar.SearchState.SEARCHING &&
+                     follower.npcState.getCurrentState() != StateMachine.States.IDLE)
+                {
+                    aStar.reset();
+                    aStar.openList.Add(aStar.setStartNode(follower));
+                    aStar.endNode = aStar.nodeModelIn(chosen);
+                    foreach (BasicModel bm in modelManager.models)
+                    {
+                        if (bm is GroundModel)
+                        {
+                            aStar.closedList.Add(aStar.nodeModelIn(bm));
+                        }
+                    }
+                    aStar.state = AStar.SearchState.SEARCHING;
+                }
+
+                
+                frameCount++;
+                if (fpsTimer >= 1)
+                {
+                    FPS = frameCount;
+                    frameCount = 0;
+                    fpsTimer = 0;
+                }
                 //keyboard check for chosen character
                 chosen.keyCheck();
-                /*
-                            foreach (BasicModel bm in modelManager.models)
-                            {
-                                if (bm is Enemy)
-                                {
-
-                                }
-                            }
-                            */
+             
                 //bounds the PC's and enemies to gravity and the level
                 chosen.checkCollision();
-                //follower.checkCollision();
+                follower.checkCollision();
                 foreach (Enemy en in modelManager.models.OfType<Enemy>())
                 {
                     en.Update(camera);
@@ -150,6 +221,7 @@ namespace Game_Assignment
                 //debug shnuff
                 if (!prevKeyboard.IsKeyDown(Keys.Z) && keyboard.IsKeyDown(Keys.Z))
                 {
+                    Console.WriteLine("stateFollower: " + follower.npcState);
                     Console.WriteLine("newLine___" + chosen.ToString());
                 }
 
@@ -197,48 +269,45 @@ namespace Game_Assignment
                 //reset characters to original position
                 if (keyboard.IsKeyDown(Keys.R))
                 {
-                    chosen.position = chosen.resetPosition;
-                    chosen.velocity = Vector3.Zero;
-                    follower.position = follower.resetPosition;
-                    follower.velocity = Vector3.Zero;
+                    reloadWorld();
+                    SoundEffectInstance se = (SoundEffectInstance)soundManager.soundBank["dwarfStep"];
+                    se.Play();
                 }
+                if (keyboard.IsKeyDown(Keys.T))
+                {
+                    SoundEffectInstance se = (SoundEffectInstance)soundManager.soundBank["humanStep"];
+                    se.Play();
+                }
+                prevKeyboard = keyboard;
             }
-
-            //follow character maybe
-            if (isFollowingPlayer)
-            {
-                Vector3 tempCamPos = camera.position;
-                tempCamPos.X = chosen.position.X;
-                tempCamPos.Y = chosen.position.Y - 50;
-                camera.position = tempCamPos;
-            }
-
-            //reset characters to original position
-            if (keyboard.IsKeyDown(Keys.R))
-            {
-                chosen.position = chosen.resetPosition;
-                chosen.velocity = Vector3.Zero;
-                follower.position = follower.resetPosition;
-                follower.velocity = Vector3.Zero;
-            }
-
-            prevKeyboard = keyboard;
 
             base.Update(gameTime);
         }
 
+        private void reloadWorld()
+        {
+            modelManager.loadWorld();
+            foreach (Human ch in modelManager.models.OfType<Human>())
+            {
+                chosen = ch;
+                foreach (Dwarf df in modelManager.models.OfType<Dwarf>())
+                {
+                    follower = df;
+                    follower.position = chosen.position - Vector3.UnitX * 40;
+                }
+            }
+        }
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             //GraphicsDevice.BlendState = BlendState.Opaque;
             //GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             DebugShapeRenderer.AddBoundingBox(chosen.box, Color.HotPink);
-            DebugShapeRenderer.AddBoundingBox(follower.skyChecker, Color.DodgerBlue);
             DebugShapeRenderer.AddLine(chosen.backFeet, chosen.backFeet + Vector3.Up * (chosen.box.Max.Y - chosen.box.Min.Y), Color.OldLace);
             DebugShapeRenderer.AddLine(chosen.frontFeet, chosen.frontFeet + Vector3.Up * (chosen.box.Max.Y - chosen.box.Min.Y), Color.OldLace);
             DebugShapeRenderer.AddBoundingBox(follower.box, Color.Magenta);
@@ -249,19 +318,55 @@ namespace Game_Assignment
             {
                 DebugShapeRenderer.AddBoundingBox(enemy.box, Color.Red);
             }
-            //foreach (BoundingBox box in levelBoxes)
-            //{
-            //    DebugShapeRenderer.AddBoundingBox(box, Color.LavenderBlush);
-            //}
+
             if (aStar != null)
             {
                 foreach (AStar.Node node in aStar.gridBoxes)
                 {
-                   DebugShapeRenderer.AddBoundingBox(node.box, Color.Red);
+                    //DebugShapeRenderer.AddBoundingBox(node.box, Color.BlanchedAlmond);
                 }
-            }
+                foreach (AStar.Node node in aStar.closedList)
+                {
+                    //DebugShapeRenderer.AddBoundingBox(node.box, Color.LightGoldenrodYellow);
+                    if (node.hasParent())
+                    {
+                        DebugShapeRenderer.AddLine(node.centre(), node.currentParent.centre(), Color.Red);
+                    }
+                }
+                foreach (AStar.Node node in aStar.openList)
+                {
+                    if (node != null)
+                    {
+                        DebugShapeRenderer.AddLine((node.centre() + new Vector3(-10, 0, 0)), (node.centre() + new Vector3(10, 0, 0)), Color.DeepPink);
+                        DebugShapeRenderer.AddLine((node.centre() + new Vector3(0, -10, 0)), (node.centre() + new Vector3(0, 10, 0)), Color.DeepPink);
+                    }
+                }
 
-            showDebug();
+                foreach (Vector3 targetNode in aStar.paths)
+                {
+                    DebugShapeRenderer.AddLine((targetNode + new Vector3(-10, 0, 0)), (targetNode + new Vector3(10, 0, 0)), Color.CadetBlue);
+                    DebugShapeRenderer.AddLine((targetNode + new Vector3(0, -10, 0)), (targetNode + new Vector3(0, 10, 0)), Color.CadetBlue);
+                }
+                DebugShapeRenderer.AddBoundingFrustum(camera.frustum, Color.Firebrick);
+                if (quadTree != null)
+                {
+                    foreach (QuadTree qt in QuadTree.leavesInsideBound)
+                    {
+                        DebugShapeRenderer.AddBoundingBox(qt.boundingBox, Color.Violet);
+                    }
+                }
+                //spriteBatch.Begin();
+                //foreach (AStar.Node node in aStar.gridBoxes)
+                //{
+                //    string h = string.Copy("H: " + node.hScore + "\nG: " + node.gScore + "\nF: " + node.fScore());// + "\nY:" + aStar.nodeArrayIndex(aStar.gridBoxes, node));
+                //    Vector3 projectedPosMax = GraphicsDevice.Viewport.Project(node.box.Max, camera.projection, camera.view, Matrix.Identity);
+                //    Vector3 projectedPosMin = GraphicsDevice.Viewport.Project(node.box.Min, camera.projection, camera.view, Matrix.Identity);
+                //    Vector2 screenPos = new Vector2(projectedPosMin.X + 10, projectedPosMax.Y);
+                //    //spriteBatch.DrawString(debugFont, test, screenPos, Color.White);    
+                //    spriteBatch.DrawString(debugFont, h, screenPos, Color.White);
+                //}
+                //spriteBatch.End();
+            }
 
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -269,6 +374,8 @@ namespace Game_Assignment
             DebugShapeRenderer.Draw(gameTime, camera.view, camera.projection);
 
             base.Draw(gameTime);
+            showDebug();
+			showScore();
         }
 
         #region Functions
@@ -373,14 +480,16 @@ namespace Game_Assignment
             {
                 front = string.Copy("enemy: " + collisionRayToBox(e.vision, chosen.box));
             }
-            string back = string.Copy("back: " + collisionRayToBoxes(chosen.backFeet, levelBoxes));
+            string back = string.Copy("back: " + collisionRayToBoxes(follower.backFeet, levelBoxes));
             string positionInText = string.Format("Position of character: ({0:0.0}, {1:0.0})", follower.position.X, follower.position.Y);
             string velocityInText = string.Format("Velocity of character: ({0:0.0}, {1:0.0})", follower.velocity.X, follower.velocity.Y);
             string jump = string.Copy("canJump = " + chosen.canJump);
             string cameraFollow = string.Copy("camera follow? " + isFollowingPlayer);
             string chosenChar = string.Copy("Selected: " + chosen.GetType());
             string rotation = string.Copy("rotation: " + chosen.rotationY);
-            string collision = string.Copy("colliding? " + collisionBoxToBoxes(chosen.box, levelBoxes));
+            string path = string.Copy("pathIndex: " + follower.pathIndex);
+            string aStarInText = string.Copy("A* State: " + aStar.state);
+            string targets = string.Copy("target: " + follower.target.Y + ", jumpHeight: " + (follower.position.Y + follower.maxJumpHeight));
 
             //string frameRateString = string.Format("time: ({0:0.0})", frameRate);
             //string scoreInText = string.Copy("GAME SCORE: " + gameScore);
@@ -392,10 +501,11 @@ namespace Game_Assignment
             spriteBatch.DrawString(debugFont, cameraFollow, new Vector2(10, 60), Color.White);
             spriteBatch.DrawString(debugFont, front, new Vector2(10, 80), Color.White);
             spriteBatch.DrawString(debugFont, back, new Vector2(175, 80), Color.White);
-            spriteBatch.DrawString(debugFont, chosenChar, new Vector2(10, 100), Color.White);
+            spriteBatch.DrawString(debugFont, path, new Vector2(10, 100), Color.White);
             spriteBatch.DrawString(debugFont, test, new Vector2(10, 120), Color.White);
             spriteBatch.DrawString(debugFont, rotation, new Vector2(10, 140), Color.White);
-            spriteBatch.DrawString(debugFont, collision, new Vector2(10, 160), Color.White);
+            spriteBatch.DrawString(debugFont, aStarInText, new Vector2(10, 160), Color.White);
+            spriteBatch.DrawString(debugFont, targets, new Vector2(10, 180), Color.White);
             spriteBatch.DrawString(debugFont, positionInText, new Vector2(10, 0), Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 1);
             //spriteBatch.DrawString(debugFont, frameRateString, new Vector2(10, 180), Color.White);
             //spriteBatch.DrawString(debugFont, scoreInText, new Vector2(10, 200), Color.Red);

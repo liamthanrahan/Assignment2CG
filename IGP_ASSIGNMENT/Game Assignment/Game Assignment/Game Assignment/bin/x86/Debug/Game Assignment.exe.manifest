@@ -105,24 +105,36 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Game Assignment.exe" size="47616">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Game Assignment.exe" size="56320">
       <assemblyIdentity name="Game Assignment" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>y2mXOczWe0GLJ3gCF4LO6y0KWbA=</dsig:DigestValue>
+        <dsig:DigestValue>O8ZnLuQThrZfirMloqvFiEfxlTc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Content\Config\behaviourconfig.xnb" size="1015">
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SkinnedModel.dll" size="11776">
+      <assemblyIdentity name="SkinnedModel" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>34v8yH1PfYEC6NG64wybjHmmx3E=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="Content\Config\behaviourconfig.xnb" size="1127">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>Xqfy7tPM9XJPAxw7HLZ9938PL2I=</dsig:DigestValue>
+      <dsig:DigestValue>38KfJC6zYxME5dRfzX0rqxWCNSw=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Config\levelconfig.xnb" size="1772">
@@ -143,22 +155,22 @@
       <dsig:DigestValue>xu/O+7PkfmAtnyQSAI3B6xh1ydY=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Models\Enemy\basicMonster.xnb" size="3855">
+  <file name="Content\Models\Enemy\basicMonster.xnb" size="3859">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>lnd28nbhnKrB6Q6n+Qad+1ZIxik=</dsig:DigestValue>
+      <dsig:DigestValue>1Mvh25/BP4CVB3/bFj5LhLDNN2Y=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Models\Enemy\monster.xnb" size="1048763">
+  <file name="Content\Models\Enemy\monster.xnb" size="175563">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>17n+7isvkV1Hpd3wCLPSrVC32gM=</dsig:DigestValue>
+      <dsig:DigestValue>dHbc5w1zyD/n6EmqjYloNIDLrFw=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Models\Enemy\monster_0.xnb" size="349775">
@@ -215,31 +227,31 @@
       <dsig:DigestValue>fMwOqyTxTxrU++QCj3QfgNEZHX0=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Models\PC\basicDwarf.xnb" size="2017">
+  <file name="Content\Models\PC\basicDwarf.xnb" size="2021">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>/f7mkJdds0fXpXhoOHcDKVazxg8=</dsig:DigestValue>
+      <dsig:DigestValue>TBlXqb+k3rtT0XEo/hziA9NXTNU=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Models\PC\basicGentleman.xnb" size="6292">
+  <file name="Content\Models\PC\basicGentleman.xnb" size="6289">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>p7KpQ0pMsUGfJIAcV2HKroQLHGw=</dsig:DigestValue>
+      <dsig:DigestValue>HkhCiz9vsTCCOfi0WPFEpJIU+1k=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Models\PC\dwarf.xnb" size="2097339">
+  <file name="Content\Models\PC\dwarf.xnb" size="584398">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>yTLnBdRyeiECSg5KCRIW64PtEG0=</dsig:DigestValue>
+      <dsig:DigestValue>c8QGmmAvrF66T4XBIbhNr/j3jTM=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Models\PC\dwarf_0.xnb" size="349771">

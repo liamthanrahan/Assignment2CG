@@ -12,9 +12,9 @@ namespace Game_Assignment
         public Dwarf(Model m, int xPos, int yPos, Game1 game)
             : base(m, xPos, yPos, game)
         {
-            scaleValue = 7;
+            scaleValue = 13;
             maxSpeed = 7;
-            jumpForce = 16;
+            jumpForce = 10;
             rotationX += MathHelper.ToRadians(90);
             maxJumpHeight = -(jumpForce * jumpForce) / (2 * game.GRAVITY.Y);
         }

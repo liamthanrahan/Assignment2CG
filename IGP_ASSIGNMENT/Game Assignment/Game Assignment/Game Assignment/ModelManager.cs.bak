@@ -13,7 +13,7 @@ using Game_Assignment_Library;
 
 namespace Game_Assignment
 {
-    class ModelManager : DrawableGameComponent
+    public class ModelManager : DrawableGameComponent
     {
         public List<BasicModel> models = new List<BasicModel>();
         public int heightOfMap;
@@ -38,6 +38,12 @@ namespace Game_Assignment
         protected override void LoadContent()
         {
             // Use configuration file to assemble world
+            loadWorld();
+            base.LoadContent();
+        }
+
+        public void loadWorld()
+        {
             ConfigSettings config = Game.Content.Load<ConfigSettings>(@"Config\levelconfig");
             BehaviourConfig behaviourConfig = Game.Content.Load<BehaviourConfig>(@"Config\behaviourconfig");
 
@@ -51,7 +57,7 @@ namespace Game_Assignment
                 {
                     addModel(config.modelmap[counterY][counterX], counterX, counterY);
                     counterX++;
-                    if(counterX > counterXMax)
+                    if (counterX > counterXMax)
                     {
                         counterXMax = counterX;
                     }
@@ -59,14 +65,9 @@ namespace Game_Assignment
                 counterX = 0;
                 counterY++;
             }
-            widthOfMap = counterXMax ;
+            widthOfMap = counterXMax;
             heightOfMap = counterY;
-            //models.Add(new SkyModel(
-            //   Game.Content.Load<Model>(@"Models\skybox")));
-
-            base.LoadContent();
         }
-
         private void addModel(char modelSymbol, int xPos, int yPos)
         {
             switch (modelSymbol)
@@ -82,7 +83,7 @@ namespace Game_Assignment
 
                 case 'P':
                     models.Add(new Human(Game.Content.Load<Model>(@"Models\PC\basicGentleman"), xPos, -yPos, (Game1)Game));
-                    models.Add(new Dwarf(Game.Content.Load<Model>(@"Models\PC\basicDwarf"), (xPos - 1), (-yPos + 1), (Game1)Game));
+                    models.Add(new Dwarf(Game.Content.Load<Model>(@"Models\PC\basicDwarf"), (xPos - 1), -yPos, (Game1)Game));
                     break;
 
                 case 'E':
