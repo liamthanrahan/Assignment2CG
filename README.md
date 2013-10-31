@@ -1,4 +1,12 @@
-Assignment2CG
-=============
+IGP Assignment 2
+================
 
-Assignment 2 for Computer Games Class
+Game project for IGP Assignment 2
+
+Worked on by:
+- Liam
+- Feleti
+- Nathan
+- Derrick
+
+Used in 2013 Spring Semester UTS
