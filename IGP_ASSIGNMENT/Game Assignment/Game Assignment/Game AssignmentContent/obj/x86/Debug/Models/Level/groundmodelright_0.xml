@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics" xmlns:Framework="Microsoft.Xna.Framework">
+  <Asset Type="Graphics:MeshContent">
+    <Name>Cube</Name>
+    <Identity>
+      <SourceFilename>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game AssignmentContent\Models\Level\groundmodelright.fbx</SourceFilename>
+      <SourceTool>FbxImporter</SourceTool>
+    </Identity>
+    <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</Transform>
+    <Positions>1.298295 1.95667 -1.476794 1.298295 -1.95667 -1.476794 -1.298295 -1.956669 -1.476794 -1.298294 1.956671 -1.476794 1.298295 1.956669 -1.461196 1.298294 -1.956671 1.476794 -1.298295 -1.956669 1.476794 -1.298295 1.95667 -1.461196</Positions>
+    <Geometry>
+      <Batch>
+        <Material>#Resource1</Material>
+        <Indices>2 1 0 0 3 2 6 5 4 4 7 6 9 8 0 0 1 9 6 11 10 10 2 6 5 6 2 2 3 5 3 13 12 12 5 3</Indices>
+        <Vertices>
+          <PositionIndices>0 1 2 3 4 7 6 5 4 5 1 5 4 0</PositionIndices>
+          <Channels>
+            <VertexChannel Name="Normal0" ElementType="Framework:Vector3">0.577318668 0.5773492 -0.577318668 0.5773492 -0.5773492 -0.5773492 -0.5773492 -0.5773492 -0.5773492 -0.577318668 0.5773492 -0.577318668 0.6189764 0.7025361 0.351084948 -0.6189764 0.7025361 0.351084948 -0.5508286 -0.373058259 0.7465743 0.5508286 -0.373058259 0.7465743 0.6189764 0.7025361 0.351084948 0.5508286 -0.373058259 0.7465743 0.5773492 -0.5773492 -0.5773492 0.5508286 -0.373058259 0.7465743 0.6189764 0.7025361 0.351084948 0.577318668 0.5773492 -0.577318668</VertexChannel>
+            <VertexChannel Name="TextureCoordinate0" ElementType="Framework:Vector2">0.714828 0.353635 0.285172 0.353635 0.285172 0.638722 0.714828 0.638722 0.714828 0.999915 0.714828 0.714828 0.285172 0.714828 0.285172 0.999915 0.714828 0.277529 0.285171 0.277529 8.5E-05 0.638722 8.5E-05 0.714828 0.999915 0.714829 0.999915 0.638723</VertexChannel>
+          </Channels>
+        </Vertices>
+      </Batch>
+    </Geometry>
+  </Asset>
+  <Resources>
+    <Resource ID="#Resource1" Type="Graphics:BasicMaterialContent">
+      <Name>Material__groundbricktex_png</Name>
+      <Identity>
+        <SourceFilename>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game AssignmentContent\Models\Level\groundmodelright.fbx</SourceFilename>
+        <SourceTool>FbxImporter</SourceTool>
+      </Identity>
+      <OpaqueData>
+        <Data Key="DiffuseColor" Type="Framework:Vector3">0.419280022 0.419280022 0.419280022</Data>
+        <Data Key="EmissiveColor" Type="Framework:Vector3">0 0 0</Data>
+        <Data Key="Alpha" Type="float">1</Data>
+        <Data Key="SpecularColor" Type="Framework:Vector3">0 0 0</Data>
+      </OpaqueData>
+      <Textures>
+        <Texture Key="Texture">
+          <OpaqueData>
+            <Data Key="TextureCoordinate">TextureCoordinate0</Data>
+          </OpaqueData>
+          <Reference>#External1</Reference>
+        </Texture>
+      </Textures>
+    </Resource>
+  </Resources>
+  <ExternalReferences>
+    <ExternalReference ID="#External1" TargetType="Graphics:TextureContent">..\..\..\..\..\Models\Level\groundbricktex.png</ExternalReference>
+  </ExternalReferences>
+</XnaContent>

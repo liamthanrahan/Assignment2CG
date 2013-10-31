@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Game_Assignment_Library.BehaviourConfig">
+    <models>
+      <Item Type="Game_Assignment_Library.GameModel">
+        <name>Character</name>
+        <states>
+          <Item Type="Game_Assignment_Library.State">
+            <name>IDLE</name>
+            <distance>500</distance>
+          </Item>
+          <Item Type="Game_Assignment_Library.State">
+            <name>FOLLOW</name>
+            <distance>50</distance>
+          </Item>
+          <Item Type="Game_Assignment_Library.State">
+            <name>JUMP</name>
+            <distance>50</distance>
+          </Item>
+        </states>
+      </Item>
+      <Item Type="Game_Assignment_Library.GameModel">
+        <name>Enemy</name>
+        <states>
+          <Item Type="Game_Assignment_Library.State">
+            <name>IDLE</name>
+            <distance>500</distance>
+          </Item>
+          <Item Type="Game_Assignment_Library.State">
+            <name>ATTACK</name>
+            <distance>50</distance>
+          </Item>
+          <Item Type="Game_Assignment_Library.State">
+            <name>CHASE</name>
+            <distance>50</distance>
+          </Item>
+          <Item Type="Game_Assignment_Library.State">
+            <name>THROW</name>
+            <distance>50</distance>
+          </Item>
+          <Item Type="Game_Assignment_Library.State">
+            <name>PATROL</name>
+            <distance>50</distance>
+          </Item>
+        </states>
+      </Item>
+    </models>
+  </Asset>
+</XnaContent>

@@ -1,0 +1,266 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+namespace Game_Assignment
+{
+    public enum characterState
+    {
+        IDLE,
+        FOLLOW,
+        JUMP
+    }
+
+    public class Character : BasicModel
+    {
+        public Vector3 resetPosition;
+        public Vector3 desiredVelocity;
+        public Vector3 steering;
+        public float mass;
+        public float maxSpeed;
+        public float jumpForce;
+        public characterState npcState = characterState.FOLLOW;
+        public BoundingBox skyChecker;
+        public float maxJumpHeight;
+
+        public Character(Model m, int xPos, int yPos, Game1 game)
+            : base(m, game)
+        {
+
+            position = new Vector3(xPos * 117.3f, yPos * 88.7f, 0);
+            rotationY = MathHelper.ToRadians(180);
+        }
+        //Changed to allow for changing rotation, skychecker, and chase to be more effective...
+        public override void Update(Camera camera)
+        {
+            if (rotationY == 0) //right
+            {
+                skyChecker = new BoundingBox(new Vector3(box.Max.X, box.Min.Y, box.Min.Z),
+                new Vector3(box.Max.X + (distanceThreshold(this)), (box.Min.Y + maxJumpHeight), box.Max.Z));
+            }
+            else //left
+            {
+                skyChecker = new BoundingBox(new Vector3(box.Min.X - (distanceThreshold(this)), box.Min.Y, box.Min.Z),
+                   new Vector3(box.Min.X, (box.Min.Y + maxJumpHeight), box.Max.Z));
+            }
+            if (this == game.follower)
+            {
+                //AI Behaviour
+                switch (npcState)
+                {
+                    case characterState.FOLLOW:
+                        follow(game.chosen);
+                       
+                        //boxCollidingWith returns the box your colliding with
+                        if (jumpLedge() || jumpObstacle())
+                            npcState = characterState.JUMP;
+                        break;
+                    case characterState.IDLE:
+                        velocity.X = 0;
+                        break;
+                    case characterState.JUMP:
+                        if (canJump)
+                            jump();
+                        game.tempBoxes.Clear();
+                        npcState = characterState.FOLLOW;
+                        break;
+                }
+                
+            }
+            //all characters behaviours           
+            position += velocity;
+
+            backFeet = new Vector3(box.Min.X + 2.5f, box.Min.Y - 5, 0);
+            frontFeet = new Vector3(box.Max.X - 2.5f, box.Min.Y - 5, 0);
+        }
+        // NEW!
+        private bool jumpLedge()
+        {
+            return (game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.LEFT 
+                || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.RIGHT)
+                && game.chosen.position.Y > position.Y 
+                && game.chosen.position.Y > game.boxCollidingWith(skyChecker, game.levelBoxes).Max.Y;
+        }
+
+        private bool jumpObstacle()
+        {
+            return (game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.TOP
+                || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.LEFT
+                || game.collisionBoxToBoxes(skyChecker, game.levelBoxes) == Game1.collisionType.RIGHT)
+                && Math.Abs(game.chosen.position.X - position.X) > 150; 
+        }
+
+        private bool jumpGap()
+        {
+            return game.boxCollidingWith(skyChecker, game.levelBoxes) != null;
+        }
+        //
+        //NEW altered to change rotation while moving in a direction
+        public void follow(Character character)
+        {
+            float tempThreshold = distanceThreshold(character);
+            float tempDistance = calculateDistance(character);
+
+            //seek and arrive at PC
+            if (tempDistance >= tempThreshold)
+            {
+                //npcState = characterState.FOLLOW;
+                Vector3 target = character.position;
+                if (character.position.X > position.X)
+                {
+                    target -= Vector3.UnitX * tempThreshold * 2;
+                    rotationY = 0;
+                }
+                else
+                {
+                    target += Vector3.UnitX * tempThreshold * 2;
+                    rotationY = MathHelper.ToRadians(180);
+                }
+                if (game.collisionBoxToBoxes(box, game.levelBoxes) == Game1.collisionType.NO_COLLISION)
+                {
+                    steering = seek(target, tempThreshold);
+                    velocity.X += steering.X / 5.5f;
+                }
+
+            }
+            else
+            {
+                velocity.X = 0;
+            }
+        }
+
+        public float calculateDistance(Character character)
+        {
+            Vector3 tempDirection = position - character.position;
+            tempDirection.Normalize();
+            Ray ray = new Ray(character.position, tempDirection);
+            float distance = 0;
+            float? rayDistance = ray.Intersects(box);
+            if (rayDistance.HasValue == true)
+                distance = (float)rayDistance;
+            return distance;
+        }
+
+        public float distanceThreshold(Character character)
+        {
+            float distanceThreshold = (character.box.Max.X - character.box.Min.X);
+            return distanceThreshold;
+        }
+
+        public void keyCheck()
+        {
+            //move right
+            if (game.prevKeyboard.IsKeyDown(Keys.Right) &&
+                game.keyboard.IsKeyDown(Keys.Right))
+            {
+                if (Math.Abs(velocity.X) <= maxSpeed)
+                {
+                    rotationY = 0;
+                    velocity += Vector3.Right * 0.5f;
+                }
+            }
+            //move left
+            else if (game.prevKeyboard.IsKeyDown(Keys.Left) &&
+                game.keyboard.IsKeyDown(Keys.Left))
+            {
+                if (Math.Abs(velocity.X) <= maxSpeed)
+                {
+                    rotationY = MathHelper.Pi;
+                    velocity += Vector3.Left * 0.5f;
+                }
+            }
+
+            //stop if !left || !right
+            if (game.prevKeyboard.IsKeyDown(Keys.Right) && !game.keyboard.IsKeyDown(Keys.Right) ||
+                game.prevKeyboard.IsKeyDown(Keys.Left) && !game.keyboard.IsKeyDown(Keys.Left))
+            {
+                Vector3 tempVel = velocity;
+                tempVel.X = 0;
+                velocity = tempVel;
+            }
+            //NEW! to ensure that the character is on the ground before it can jump
+            //jumping
+            if (game.keyboard.IsKeyDown(Keys.Up) && !game.prevKeyboard.IsKeyDown(Keys.Up))
+            {
+                if (canJump || game.collisionBoxToBoxes(box,game.levelBoxes) == Game1.collisionType.BOTTOM)
+                    jump();
+                if (this == game.chosen)
+                {
+                    if (game.tempBoxes.Count > 0)
+                        game.tempBoxes.Clear();
+                    BoundingBox tempBox = box;
+                    tempBox.Max.Z += 10;
+                    game.tempBoxes.Add(tempBox);
+                }
+            }
+
+            //stay command toggle
+            if (game.keyboard.IsKeyDown(Keys.Q) && !game.prevKeyboard.IsKeyDown(Keys.Q))
+            {
+                if (game.follower.npcState == characterState.FOLLOW)
+                {
+                    game.follower.npcState = characterState.IDLE;
+                }
+                else if (game.follower.npcState == characterState.IDLE)
+                {
+                    game.follower.npcState = characterState.FOLLOW;
+                }
+            }
+
+            //grab objects
+            if (game.keyboard.IsKeyDown(Keys.F) && !game.prevKeyboard.IsKeyDown(Keys.F))
+            {
+                BoundingBox grabBox = new BoundingBox();
+                if (rotationY == 0)
+                {
+                    grabBox = new BoundingBox(new Vector3(box.Max.X, box.Min.Y, box.Min.Z),
+                       new Vector3((box.Max.X + distanceThreshold(this)), box.Max.Y, box.Max.Z));
+                }
+                else if (rotationY == MathHelper.Pi)
+                {
+                    grabBox = new BoundingBox(new Vector3((box.Min.X - distanceThreshold(this)), box.Min.Y, box.Min.Z),
+                       new Vector3(box.Min.X, box.Max.Y, box.Max.Z));
+                }
+
+                if (grabBox.Intersects(game.follower.box) || this.box.Intersects(game.follower.box))
+                {
+                    Console.WriteLine("im grabbing your ass");
+                    game.follower.npcState = characterState.IDLE;
+                }
+            }
+
+        }
+
+        public void jump()
+        {
+            Vector3 tempVelocity = velocity;
+            tempVelocity.Y = jumpForce;
+            velocity = tempVelocity;
+            canJump = false;
+        }
+
+        public Vector3 seek(Vector3 target, float slowRadius)
+        {
+            Vector3 force;
+            float tempDistance;
+            desiredVelocity = target - position;
+            tempDistance = desiredVelocity.Length();
+            desiredVelocity.Normalize();
+
+            if (tempDistance <= slowRadius)
+            {
+                desiredVelocity *= (maxSpeed * tempDistance / slowRadius);
+            }
+            else
+            {
+                desiredVelocity *= maxSpeed;
+            }
+
+            force = desiredVelocity - velocity;
+            return force;
+        }
+    }
+}

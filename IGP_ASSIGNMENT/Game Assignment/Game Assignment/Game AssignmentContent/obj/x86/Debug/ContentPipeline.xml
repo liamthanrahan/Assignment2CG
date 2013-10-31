@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline" xmlns:Framework="Microsoft.Xna.Framework" xmlns:Processors="Microsoft.Xna.Framework.Content.Pipeline.Processors">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <Item>
+      <Source>Models\Level\groundbricktex.png</Source>
+      <Name>Models\Level\groundbricktex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Level\groundbricktex.xnb</Output>
+      <Time>2013-09-25T09:41:46+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\PC\gentleman - copy.png</Source>
+      <Name>Models\PC\gentleman - copy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\PC\gentleman - copy.xnb</Output>
+      <Time>2013-10-04T03:51:14+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\Enemy\monster.png</Source>
+      <Name>Models\Enemy\monster</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Enemy\monster.xnb</Output>
+      <Time>2013-10-05T23:59:56+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\PC\dwarf.jpg</Source>
+      <Name>Models\PC\dwarf</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\PC\dwarf.xnb</Output>
+      <Time>2013-10-07T00:49:46+11:00</Time>
+    </Item>
+    <Item>
+      <Source>Config\levelconfig.xml</Source>
+      <Name>Config\levelconfig</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Config\levelconfig.xnb</Output>
+      <Time>2013-10-27T20:18:10.8177541+11:00</Time>
+    </Item>
+    <Item>
+      <Source>Config\behaviourconfig.xml</Source>
+      <Name>Config\behaviourconfig</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Config\behaviourconfig.xnb</Output>
+      <Time>2013-10-24T15:06:13+11:00</Time>
+    </Item>
+    <Item>
+      <Source>debugFont.spritefont</Source>
+      <Name>debugFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\debugFont.xnb</Output>
+      <Time>2013-10-27T20:08:59.5676227+11:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\PC\basicGentleman.fbx</Source>
+      <Name>Models\PC\basicGentleman</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\PC\basicGentleman.xnb</Output>
+      <Time>2013-10-05T03:33:44+10:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\Models\PC\basicGentleman_0.xml</Key>
+        <Value>2013-10-30T17:31:29.6678984+11:00</Value>
+      </Dependency>
+      <Request>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\PC\gentleman - Copy_0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>Models\Enemy\basicMonster.fbx</Source>
+      <Name>Models\Enemy\basicMonster</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Enemy\basicMonster.xnb</Output>
+      <Time>2013-10-05T23:55:56+10:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\Models\Enemy\basicMonster_0.xml</Key>
+        <Value>2013-10-30T17:31:30.2993879+11:00</Value>
+      </Dependency>
+      <Request>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Enemy\monster_0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>Models\PC\basicDwarf.fbx</Source>
+      <Name>Models\PC\basicDwarf</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\PC\basicDwarf.xnb</Output>
+      <Time>2013-10-06T00:28:38+10:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\Models\PC\basicDwarf_0.xml</Key>
+        <Value>2013-10-30T17:31:30.5685648+11:00</Value>
+      </Dependency>
+      <Request>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\PC\dwarf_0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>Models\Level\groundmodel.fbx</Source>
+      <Name>Models\Level\groundmodel</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Level\groundmodel.xnb</Output>
+      <Time>2013-10-07T23:57:58+11:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\Models\Level\groundmodel_0.xml</Key>
+        <Value>2013-10-30T17:31:30.8837759+11:00</Value>
+      </Dependency>
+      <Request>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Level\groundbricktex_0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>Models\Level\groundmodelright.fbx</Source>
+      <Name>Models\Level\groundmodelright</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Level\groundmodelright.xnb</Output>
+      <Time>2013-10-07T23:57:58+11:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\Models\Level\groundmodelright_0.xml</Key>
+        <Value>2013-10-30T17:31:31.3010551+11:00</Value>
+      </Dependency>
+      <Request>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Level\groundbricktex_0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>Models\Level\groundmodelleft.fbx</Source>
+      <Name>Models\Level\groundmodelleft</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Level\groundmodelleft.xnb</Output>
+      <Time>2013-10-07T23:57:58+11:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\Models\Level\groundmodelleft_0.xml</Key>
+        <Value>2013-10-30T17:31:31.3430837+11:00</Value>
+      </Dependency>
+      <Request>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Level\groundbricktex_0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>Models\PC\basicGentleman.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\PC\basicGentleman_0.xml</Output>
+      <Time>2013-10-05T03:33:44+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\PC\gentleman - Copy.png</Source>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Parameters>
+        <Data Key="ColorKeyColor" Type="Framework:Color">FFFF00FF</Data>
+        <Data Key="ColorKeyEnabled" Type="bool">true</Data>
+        <Data Key="TextureFormat" Type="Processors:TextureProcessorOutputFormat">DxtCompressed</Data>
+        <Data Key="GenerateMipmaps" Type="bool">true</Data>
+        <Data Key="ResizeToPowerOfTwo" Type="bool">false</Data>
+        <Data Key="PremultiplyAlpha" Type="bool">true</Data>
+      </Parameters>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\PC\gentleman - Copy_0.xnb</Output>
+      <Time>2013-10-04T03:51:14+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\Enemy\basicMonster.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\Enemy\basicMonster_0.xml</Output>
+      <Time>2013-10-05T23:55:56+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\Enemy\monster.png</Source>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Parameters>
+        <Data Key="ColorKeyColor" Type="Framework:Color">FFFF00FF</Data>
+        <Data Key="ColorKeyEnabled" Type="bool">true</Data>
+        <Data Key="TextureFormat" Type="Processors:TextureProcessorOutputFormat">DxtCompressed</Data>
+        <Data Key="GenerateMipmaps" Type="bool">true</Data>
+        <Data Key="ResizeToPowerOfTwo" Type="bool">false</Data>
+        <Data Key="PremultiplyAlpha" Type="bool">true</Data>
+      </Parameters>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Enemy\monster_0.xnb</Output>
+      <Time>2013-10-05T23:59:56+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\PC\basicDwarf.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\PC\basicDwarf_0.xml</Output>
+      <Time>2013-10-06T00:28:38+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\PC\dwarf.jpg</Source>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Parameters>
+        <Data Key="ColorKeyColor" Type="Framework:Color">FFFF00FF</Data>
+        <Data Key="ColorKeyEnabled" Type="bool">true</Data>
+        <Data Key="TextureFormat" Type="Processors:TextureProcessorOutputFormat">DxtCompressed</Data>
+        <Data Key="GenerateMipmaps" Type="bool">true</Data>
+        <Data Key="ResizeToPowerOfTwo" Type="bool">false</Data>
+        <Data Key="PremultiplyAlpha" Type="bool">true</Data>
+      </Parameters>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\PC\dwarf_0.xnb</Output>
+      <Time>2013-10-07T00:49:46+11:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\Level\groundmodel.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\Level\groundmodel_0.xml</Output>
+      <Time>2013-10-07T23:57:58+11:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\Level\groundbricktex.png</Source>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Parameters>
+        <Data Key="ColorKeyColor" Type="Framework:Color">FFFF00FF</Data>
+        <Data Key="ColorKeyEnabled" Type="bool">true</Data>
+        <Data Key="TextureFormat" Type="Processors:TextureProcessorOutputFormat">DxtCompressed</Data>
+        <Data Key="GenerateMipmaps" Type="bool">true</Data>
+        <Data Key="ResizeToPowerOfTwo" Type="bool">false</Data>
+        <Data Key="PremultiplyAlpha" Type="bool">true</Data>
+      </Parameters>
+      <Options>None</Options>
+      <Output>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\Models\Level\groundbricktex_0.xnb</Output>
+      <Time>2013-09-25T09:41:46+10:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\Level\groundmodelright.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\Level\groundmodelright_0.xml</Output>
+      <Time>2013-10-07T23:57:58+11:00</Time>
+    </Item>
+    <Item>
+      <Source>Models\Level\groundmodelleft.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\Models\Level\groundmodelleft_0.xml</Output>
+      <Time>2013-10-07T23:57:58+11:00</Time>
+    </Item>
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <TargetPlatform>Windows</TargetPlatform>
+      <TargetProfile>Reach</TargetProfile>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game AssignmentContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game AssignmentContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment\Game Assignment\Game Assignment\bin\x86\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Value>2010-08-23T12:41:18+10:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
+        <Value>2010-08-23T12:41:18+10:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Value>2010-08-23T12:41:18+10:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Value>2010-08-23T12:41:18+10:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Value>2010-08-23T12:41:18+10:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
+        <Value>2010-08-23T12:41:18+10:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Users\Liam\Downloads\IGP_ASSIGNMENT\IGP_ASSIGNMENT\IGP_ASSIGNMENT\Game Assignment Library\Game Assignment Library\bin\x86\Debug\Game Assignment Library.dll</Key>
+        <Value>2013-10-24T15:07:51+11:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2013-08-25T14:18:08.8769192+10:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>

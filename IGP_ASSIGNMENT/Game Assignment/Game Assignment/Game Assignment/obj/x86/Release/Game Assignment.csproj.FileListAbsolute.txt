@@ -1,0 +1,21 @@
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\groundbricktex.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_back.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_front.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_left.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_right.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_top.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\groundmodel.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\skybox.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\groundbricktex_0.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_top_0.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_right_0.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_left_0.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_front_0.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Models\clear_back_0.xnb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Content\Config\modelmap.txt
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Game Assignment.exe
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\bin\x86\Release\Game Assignment.pdb
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\obj\x86\Release\Game Assignment.csprojResolveAssemblyReference.cache
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\obj\x86\Release\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\obj\x86\Release\Game Assignment.exe
+C:\Users\Liam\documents\visual studio 2010\Projects\Game Assignment\Game Assignment\Game Assignment\obj\x86\Release\Game Assignment.pdb
